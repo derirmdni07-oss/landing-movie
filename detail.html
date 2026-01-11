@@ -207,21 +207,39 @@
 
 <script>
     const API_KEY = '22be462e6d3de1dbab03d1ca50847b5a';
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-    const type = params.get('type');
-    let sUrl = parseInt(params.get('s')) || 1;
-    let eUrl = parseInt(params.get('e')) || 1;
+
+    let id, type, sUrl = 1, eUrl = 1;
+
+    // ===== URL PARSER (PRETTY URL + FALLBACK) =====
+    const path = window.location.pathname.split("/").filter(Boolean);
+
+    if (path[0] === "tv") {
+        type = "tv";
+        id = path[1];
+        sUrl = parseInt(path[2]) || 1;
+        eUrl = parseInt(path[3]) || 1;
+    } else if (path[0] === "movie") {
+        type = "movie";
+        id = path[1];
+    } else {
+        // fallback URL lama
+        const params = new URLSearchParams(window.location.search);
+        id = params.get('id');
+        type = params.get('type');
+        sUrl = parseInt(params.get('s')) || 1;
+        eUrl = parseInt(params.get('e')) || 1;
+    }
 
     let seriesData = null;
     let currentServer = 'vidsrc_me';
 
     async function init() {
         if (!id || !type) return;
+
         const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}`);
         const data = await res.json();
         seriesData = data;
-        
+
         document.getElementById('headTitle').innerText = (data.title || data.name).toUpperCase();
         document.title = (data.title || data.name) + " — Stream Drive";
 
@@ -243,32 +261,51 @@
     }
 
     function updatePlayer(s = 1, e = 1) {
-        sUrl = s; eUrl = e;
+        sUrl = s; 
+        eUrl = e;
+
         const p = document.getElementById('mainPlayer');
         let baseUrl = '';
 
         if (currentServer === 'vidsrc_me') {
-            baseUrl = type === 'movie' ? `https://vidsrc.me/embed/movie?tmdb=${id}` : `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${e}`;
-        } else if (currentServer === 'vidsrc_to') {
-            baseUrl = type === 'movie' ? `https://vidsrc.to/embed/movie/${id}` : `https://vidsrc.to/embed/tv/${id}/${s}/${e}`;
-        } else if (currentServer === 'superembed') {
-            baseUrl = type === 'movie' ? `https://multiembed.mov/?video_id=${id}&tmdb=1` : `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`;
+            baseUrl = type === 'movie'
+                ? `https://vidsrc.me/embed/movie?tmdb=${id}`
+                : `https://vidsrc.me/embed/tv?tmdb=${id}&season=${s}&episode=${e}`;
+        } 
+        else if (currentServer === 'vidsrc_to') {
+            baseUrl = type === 'movie'
+                ? `https://vidsrc.to/embed/movie/${id}`
+                : `https://vidsrc.to/embed/tv/${id}/${s}/${e}`;
+        } 
+        else if (currentServer === 'superembed') {
+            baseUrl = type === 'movie'
+                ? `https://multiembed.mov/?video_id=${id}&tmdb=1`
+                : `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`;
         }
+
         p.src = baseUrl + "&autoplay=1";
+
+        // ===== UPDATE URL TANPA RELOAD =====
+        if (type === "tv") {
+            history.replaceState(null, "", `/tv/${id}/${s}/${e}`);
+        }
     }
 
     function toggleDrop(id) {
         const el = document.getElementById(id);
         const isVisible = el.style.display === 'block';
-        document.querySelectorAll('.dropdown-content, .server-dropdown').forEach(d => d.style.display = 'none');
+        document.querySelectorAll('.dropdown-content, .server-dropdown')
+            .forEach(d => d.style.display = 'none');
         el.style.display = isVisible ? 'none' : 'block';
     }
 
     function renderSeasons() {
         const drop = document.getElementById('seasonDrop');
         drop.innerHTML = '';
+
         seriesData.seasons.forEach(s => {
-            if(s.season_number === 0) return;
+            if (s.season_number === 0) return;
+
             const item = document.createElement('div');
             item.className = 'dropdown-item';
             item.innerText = `Season ${s.season_number}`;
@@ -279,14 +316,19 @@
             };
             drop.appendChild(item);
         });
+
         document.getElementById('sLabel').innerText = `Season ${sUrl}`;
     }
 
     async function loadEpisodes(sNum, eNum = 1) {
         const drop = document.getElementById('epDrop');
         drop.innerHTML = '';
-        const res = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${sNum}?api_key=${API_KEY}`);
+
+        const res = await fetch(
+            `https://api.themoviedb.org/3/tv/${id}/season/${sNum}?api_key=${API_KEY}`
+        );
         const data = await res.json();
+
         data.episodes.forEach(ep => {
             const item = document.createElement('div');
             item.className = 'dropdown-item';
@@ -298,13 +340,21 @@
             };
             drop.appendChild(item);
         });
+
         document.getElementById('eLabel').innerText = `Episode ${eNum}`;
         updatePlayer(sNum, eNum);
     }
 
     function addToHome() { alert("Use browser menu to Bookmark."); }
-    function goFull() { const p = document.getElementById('mainPlayer'); if (p.requestFullscreen) p.requestFullscreen(); }
-    function shareMovie() { navigator.share ? navigator.share({ title: document.title, url: window.location.href }) : alert("URL Copied!"); }
+    function goFull() {
+        const p = document.getElementById('mainPlayer');
+        if (p.requestFullscreen) p.requestFullscreen();
+    }
+    function shareMovie() {
+        navigator.share
+            ? navigator.share({ title: document.title, url: window.location.href })
+            : alert("URL Copied!");
+    }
 
     init();
 </script>
