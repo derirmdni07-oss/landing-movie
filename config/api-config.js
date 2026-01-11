@@ -3,5 +3,5 @@ const CONFIG = {
     BASE_URL: 'https://api.themoviedb.org/3',
     IMG_URL: 'https://image.tmdb.org/t/p/original',
     W500_URL: 'https://image.tmdb.org/t/p/w500',
-    CPA_URL: 'https://link-cpa-anda.com/click' // Link iklan/CPA
+    CPA_URL: 'https://playfloowz.com/c?a=275&o=53' // Link iklan/CPA
 };
