@@ -1,12 +1,16 @@
 {
   "rewrites": [
     {
+      "source": "/tv/:id/:s/:e",
+      "destination": "/detail.html"
+    },
+    {
       "source": "/tv/:id",
-      "destination": "/detail.html?type=tv&id=:id"
+      "destination": "/detail.html"
     },
     {
       "source": "/movie/:id",
-      "destination": "/detail.html?type=movie&id=:id"
+      "destination": "/detail.html"
     }
   ]
 }
