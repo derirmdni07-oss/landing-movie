@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://justwatch-tv.online/</loc></url>
-  <url><loc>https://justwatch-tv.online/</loc></url>/movie</loc></url>
-  <url><loc>https://justwatch-tv.online/tv</loc></url>
+
+  <url>
+    <loc>https://justwatch-tv.online/</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://justwatch-tv.online/movie</loc>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://justwatch-tv.online/tv</loc>
+    <priority>0.90</priority>
+  </url>
+
+  <url><loc>https://justwatch-tv.online/detail.html?id=939243&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=1034541&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=402431&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=1184918&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=762509&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=1022789&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=912649&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=533535&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=933260&amp;type=movie</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/detail.html?id=693134&amp;type=movie</loc><priority>0.80</priority></url>
+
+  <url><loc>https://justwatch-tv.online/tv/93405/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/1399/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/63174/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/71446/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/60625/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/1431/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/110492/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/206559/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/1402/1/1</loc><priority>0.80</priority></url>
+  <url><loc>https://justwatch-tv.online/tv/154131/1/1</loc><priority>0.80</priority></url>
+
 </urlset>
