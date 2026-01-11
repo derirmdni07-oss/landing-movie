@@ -373,5 +373,26 @@ hs.src = ('//s10.histats.com/js15_as.js');
 })();</script>
 <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4992391&101" alt="" border="0"></a></noscript>
 <!-- Histats.com  END  -->
+    <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const movieId = urlParams.get('id');
+  const type = urlParams.get('type');
+  const apiKey = '22be462e6d3de1dbab03d1ca50847b5a';
+
+  if (movieId) {
+    fetch(`https://api.themoviedb.org/3/${type}/${movieId}?api_key=${apiKey}`)
+      .then(response => response.json())
+      .then(data => {
+        const title = data.title || data.name;
+        const overview = data.overview;
+        
+        // Mengubah Title Tag agar terbaca Google
+        document.title = `Watch ${title} Online Free HD - JustWatch TV`;
+        
+        // Mengubah Meta Description
+        document.querySelector('meta[name="description"]').setAttribute("content", overview);
+      });
+  }
+</script>
 </body>
 </html>
