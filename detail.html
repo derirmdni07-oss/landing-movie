@@ -2,404 +2,454 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JustWatch-TV — Premium Sky Blue 4K Streaming</title>
-    <meta name="description" content="Watch the latest Movies and TV Series in Ultra HD. No subscription required.">
-
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2210%22 y=%2220%22 width=%2280%22 height=%2260%22 rx=%2210%22 fill=%22%230077be%22/><path d=%22M40 35 L70 50 L40 65 Z%22 fill=%22white%22/></svg>">
-
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JustWatch TV — Ultra HD Premium</title>
+    
+    <!-- Fonts: Inter for precision, Montserrat for elegance -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         :root {
-            --bg: #010816;
-            --surface: #04122d;
-            --accent: #00d2ff; /* Sky Blue */
-            --ocean: #0077be; /* Sea Blue */
-            --text: #f0faff;
-            --text-dim: #7da0ca;
-            --border: rgba(0, 210, 255, 0.15);
-            --glow: rgba(0, 210, 255, 0.3);
+            --brand-primary: #00d2ff;
+            --brand-deep: #0077be;
+            --bg-main: #020617;
+            --bg-card: rgba(15, 23, 42, 0.6);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.06);
+            --accent-glow: rgba(0, 210, 255, 0.4);
+            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.5; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-        /* Compact Elegant Header */
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* High-End Header */
         header {
-            background: rgba(1, 8, 22, 0.9);
+            position: fixed; top: 0; left: 0; right: 0;
+            height: 56px;
+            background: rgba(2, 6, 23, 0.8);
             backdrop-filter: blur(20px);
-            padding: 8px 20px; /* Reduced padding */
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            -webkit-backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
             border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 1000;
+            z-index: 1000;
         }
 
-        .logo-container { display: flex; align-items: center; gap: 8px; text-decoration: none; }
-        .logo-box {
-            position: relative; width: 28px; height: 28px; /* Smaller logo box */
-            background: linear-gradient(135deg, var(--ocean), var(--accent));
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 12px var(--glow);
-        }
-        .logo-text { 
-            font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.8px;
-            background: linear-gradient(to right, #fff, var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-weight: normal;
-        }
-        .logo-text span { color: var(--accent); -webkit-text-fill-color: var(--accent); font-size: 0.9rem; vertical-align: middle; margin-left: -2px; }
-
-        .home-btn { 
-            color: var(--accent); background: rgba(0, 210, 255, 0.05);
-            width: 32px; height: 32px; border-radius: 10px; 
-            display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; border: 1px solid var(--border);
+        .logo {
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none;
+            transition: var(--transition);
         }
 
-        /* Video Stage */
-        .video-stage { width: 100%; background: #000; position: relative; overflow: hidden; }
-        .fake-player {
+        .logo:active { transform: scale(0.96); }
+
+        .logo-icon {
+            width: 28px; height: 28px;
+            background: linear-gradient(135deg, var(--brand-deep), var(--brand-primary));
+            border-radius: 7px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, var(--brand-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .search-btn {
+            color: var(--text-muted);
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        /* Cinematic Video Player Section */
+        .player-wrapper {
+            margin-top: 56px;
+            width: 100%;
+            background: #000;
+            position: relative;
+        }
+
+        .main-player {
             width: 100%;
             aspect-ratio: 16/9;
             background-size: cover;
             background-position: center;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .main-player::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(0deg, var(--bg-main) 0%, rgba(2, 6, 23, 0.4) 100%);
+        }
+
+        .play-btn {
+            position: relative; z-index: 10;
+            width: 64px; height: 64px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 22px;
+            transition: var(--transition);
             cursor: pointer;
         }
-        .fake-player::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(0deg, var(--bg) 0%, rgba(0,0,0,0.3) 50%);
-            z-index: 1;
-        }
 
-        /* Pocket Sized Minimalist Pop-up */
-        .register-overlay {
+        .play-btn:hover { background: var(--brand-primary); color: #000; border-color: var(--brand-primary); transform: scale(1.1); }
+
+        /* Premium Minimalist Popup */
+        .auth-overlay {
             position: absolute; inset: 0;
-            background: rgba(1, 8, 22, 0.6); backdrop-filter: blur(5px);
-            z-index: 20; display: none; 
-            justify-content: center; align-items: center; padding: 10px;
+            background: rgba(2, 6, 23, 0.7);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            display: none; align-items: center; justify-content: center;
+            animation: fadeIn 0.4s ease;
         }
-        .reg-box {
-            background: rgba(4, 18, 45, 0.98); 
-            border: 1px solid var(--accent);
-            padding: 12px; border-radius: 12px; 
-            width: 65%; max-width: 200px; 
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .auth-card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--brand-primary);
+            padding: 24px;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 240px;
             text-align: center;
-            animation: miniPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
-        @keyframes miniPop { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .reg-box h3 { font-size: 0.75rem; margin-bottom: 4px; color: #fff; font-weight: 800; letter-spacing: 0.5px; }
-        .reg-box p { font-size: 0.55rem; color: var(--text-dim); margin-bottom: 10px; line-height: 1.1; }
+        @keyframes slideUp { from { transform: translateY(20px) scale(0.9); } to { transform: translateY(0) scale(1); } }
+
+        .auth-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; letter-spacing: 0.5px; }
+        .auth-card p { font-size: 11px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
         
-        .cpa-link {
-            display: block; width: 100%; background: linear-gradient(to right, var(--ocean), var(--accent));
-            color: white; text-decoration: none; padding: 6px; border-radius: 6px;
-            font-weight: 800; font-size: 0.6rem; text-transform: uppercase;
-            box-shadow: 0 4px 12px rgba(0, 210, 255, 0.2);
+        .premium-btn {
+            display: inline-block; width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--brand-deep), var(--brand-primary));
+            color: #fff; text-decoration: none;
+            border-radius: 12px;
+            font-size: 12px; font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2);
+            transition: var(--transition);
         }
 
-        /* Minimal Controls */
-        .fake-controls {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            height: 30px; background: linear-gradient(transparent, rgba(1, 8, 22, 0.95));
-            z-index: 10; display: flex; align-items: center; padding: 0 10px;
-            gap: 10px; font-size: 0.65rem;
-        }
-        .progress-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.1); }
-        .progress-fill { width: 0%; height: 100%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+        .premium-btn:active { transform: translateY(2px); opacity: 0.9; }
 
-        .play-trigger {
-            position: relative; z-index: 5;
-            width: 40px; height: 40px;
-            background: rgba(0, 210, 255, 0.1);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(0, 210, 255, 0.4);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            color: white; font-size: 0.9rem;
-            transition: 0.3s;
+        /* Feature Badges Grid */
+        .specs-bar {
+            display: flex; justify-content: center; gap: 10px;
+            padding: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
 
-        /* Elegant Feature Bar */
-        .feature-bar {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 10px;
-            flex-wrap: wrap;
-        }
-        .feature-badge {
-            background: rgba(0, 210, 255, 0.03);
+        .specs-bar::-webkit-scrollbar { display: none; }
+
+        .badge {
+            flex: 0 0 auto;
+            padding: 6px 12px;
+            background: var(--glass);
             border: 1px solid var(--border);
-            padding: 4px 8px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.55rem;
-            font-weight: 800;
-            color: var(--text-dim);
-        }
-        .feature-badge i { color: var(--accent); font-size: 0.7rem; }
-        .feature-badge.active { color: #fff; border-color: var(--accent); background: rgba(0, 210, 255, 0.08); }
-
-        /* Content Info */
-        .content-info { padding: 5px 15px; text-align: center; }
-        #headTitle { 
-            font-size: 1.1rem; font-weight: 800; color: white; margin-bottom: 2px; 
-            letter-spacing: -0.3px; 
-            background: linear-gradient(to bottom, #fff, var(--text-dim));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            border-radius: 8px;
+            font-size: 10px; font-weight: 700;
+            color: var(--text-muted);
+            display: flex; align-items: center; gap: 6px;
+            transition: var(--transition);
         }
 
-        /* Selectors */
-        .selection-container { padding: 0 15px; margin-bottom: 20px; }
-        .label-text { font-size: 0.55rem; font-weight: 800; color: var(--accent); text-transform: uppercase; margin-bottom: 5px; display: block; letter-spacing: 1.2px; opacity: 0.8; }
-        .select-box {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 8px; padding: 10px;
+        .badge.active { color: var(--brand-primary); border-color: rgba(0, 210, 255, 0.3); background: rgba(0, 210, 255, 0.05); }
+
+        /* Meta Content */
+        .meta-content { padding: 0 24px 20px; text-align: center; }
+        .meta-content h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+        .meta-content .subtitle { font-size: 12px; color: var(--brand-primary); font-weight: 600; opacity: 0.8; }
+
+        /* Selector UI */
+        .selectors { padding: 0 24px; margin-bottom: 32px; }
+        .select-group { margin-bottom: 16px; }
+        .label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
+
+        .select-trigger {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            border-radius: 14px;
             display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; margin-bottom: 6px; font-size: 0.75rem;
+            font-size: 14px; font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        .dropdown-content {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-            margin-top: -3px; margin-bottom: 8px; display: none; max-height: 180px; overflow-y: auto;
+
+        .select-trigger:hover { border-color: var(--brand-primary); background: rgba(15, 23, 42, 0.8); }
+
+        .dropdown {
+            margin-top: 8px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            display: none;
+            max-height: 250px; overflow-y: auto;
+            animation: slideDown 0.3s ease;
         }
-        .dropdown-item { padding: 10px 15px; border-bottom: 1px solid rgba(0,210,255,0.05); font-size: 0.75rem; }
 
-        /* Recommendations */
-        .rec-section { margin-top: 5px; border-top: 1px solid var(--border); padding: 15px; }
-        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
-        .rec-card { text-decoration: none; color: white; }
-        .rec-img { width: 100%; aspect-ratio: 2/3; border-radius: 4px; background-size: cover; background-position: center; border: 1px solid var(--border); transition: 0.3s; }
-        .rec-info { font-size: 0.45rem; font-weight: 600; text-align: center; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-dim); }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        footer { text-align: center; padding: 25px 15px; opacity: 0.4; font-size: 0.55rem; border-top: 1px solid var(--border); color: var(--accent); }
-        .runtime-tag { font-size: 0.55rem; background: rgba(0, 210, 255, 0.1); padding: 2px 4px; border-radius: 3px; color: var(--accent); margin-left: auto; font-weight: 800; border: 0.5px solid var(--border); }
+        .drop-item {
+            padding: 14px 18px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .drop-item:hover { background: rgba(0, 210, 255, 0.1); color: var(--brand-primary); }
+
+        /* Trending Grid */
+        .trending { padding: 0 24px 40px; }
+        .trending-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .trending-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+        .movie-card { text-decoration: none; color: inherit; }
+        .poster {
+            width: 100%; aspect-ratio: 2/3;
+            border-radius: 12px;
+            background-size: cover; background-position: center;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .movie-card:hover .poster { transform: scale(1.05); border-color: var(--brand-primary); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .title-sm { font-size: 10px; font-weight: 600; text-align: center; margin-top: 8px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--border); }
+        footer p { font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; opacity: 0.6; }
+
+        .time-info {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 8px 16px; display: flex; align-items: center; justify-content: space-between;
+            background: linear-gradient(transparent, rgba(2,6,23,0.9));
+            font-size: 11px; font-family: monospace; color: var(--brand-primary);
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <a href="/" class="logo-container">
-        <div class="logo-box"><i class="fas fa-play" style="font-size: 9px; color: white;"></i></div>
-        <span class="logo-text">JUSTWATCH<span>-TV</span></span>
+    <a href="/" class="logo">
+        <div class="logo-icon"><i class="fas fa-play" style="font-size: 12px; color: #fff;"></i></div>
+        <span class="logo-text">JustWatch</span>
     </a>
-    <a href="/" class="home-btn"><i class="fas fa-search" style="font-size: 12px;"></i></a>
+    <div class="search-btn"><i class="fas fa-search"></i></div>
 </header>
 
-<section class="video-stage">
-    <div class="fake-player" id="backdropContainer" onclick="showRegister()">
-        <div class="play-trigger" id="playIcon">
-            <i class="fas fa-play" id="playSymbol" style="margin-left: 2px;"></i>
+<div class="player-wrapper">
+    <div class="main-player" id="stage" onclick="openAuth()">
+        <div class="play-btn" id="playUI">
+            <i class="fas fa-play" style="margin-left: 4px;"></i>
         </div>
-        
-        <!-- Pocket Sized Pop-up -->
-        <div class="register-overlay" id="regOverlay" onclick="event.stopPropagation()">
-            <div class="reg-box">
-                <i class="fas fa-gem" style="font-size: 0.9rem; color: var(--accent); margin-bottom: 6px;"></i>
-                <h3>PREMIUM ACCESS</h3>
-                <p>Register for free to unlock <b>4K Sky-HD</b> quality.</p>
-                <a href="https://your-cpa-link.com" class="cpa-link">GET ACCESS</a>
+
+        <div class="auth-overlay" id="authOverlay" onclick="event.stopPropagation()">
+            <div class="auth-card">
+                <i class="fas fa-crown" style="font-size: 24px; color: var(--brand-primary); margin-bottom: 12px;"></i>
+                <h3>PREMIUM ONLY</h3>
+                <p>Unlock 4K Ultra HD streaming and Dolby Atmos by creating a free account.</p>
+                <a href="#" class="premium-btn">Join Premium Now</a>
             </div>
         </div>
 
-        <div class="fake-controls">
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <i class="fas fa-play" style="color: var(--accent);"></i>
-            <span id="timerDisplay" style="font-weight: 700; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.5px; color: var(--accent);">00:00 / --:--</span>
-            <div style="margin-left: auto; display: flex; gap: 8px; opacity: 0.6;">
-                <i class="fas fa-closed-captioning"></i>
-                <i class="fas fa-expand"></i>
+        <div class="time-info">
+            <span id="currentTime">00:00:00</span>
+            <span id="totalTime">01:45:00</span>
+        </div>
+    </div>
+</div>
+
+<div class="specs-bar">
+    <div class="badge active"><i class="fas fa-bolt"></i> 4K ULTRA HD</div>
+    <div class="badge active"><i class="fas fa-volume-high"></i> DOLBY ATMOS</div>
+    <div class="badge"><i class="fas fa-closed-captioning"></i> ENGLISH SUB</div>
+    <div class="badge"><i class="fas fa-shield-halved"></i> SECURE</div>
+</div>
+
+<div class="meta-content">
+    <h1 id="mainTitle">PREPARING...</h1>
+    <div class="subtitle" id="subLabel">MOVIE · 2024 · 2h 15m</div>
+</div>
+
+<div class="selectors">
+    <div id="tvUI" style="display: none;">
+        <div class="select-group">
+            <span class="label">Select Season</span>
+            <div class="select-trigger" onclick="toggleMenu('sMenu')">
+                <span id="sVal">Season 1</span>
+                <i class="fas fa-chevron-down" style="font-size: 10px; opacity: 0.5;"></i>
             </div>
+            <div id="sMenu" class="dropdown"></div>
+        </div>
+
+        <div class="select-group">
+            <span class="label">Select Episode</span>
+            <div class="select-trigger" onclick="toggleMenu('eMenu')">
+                <span id="eVal">Episode 1</span>
+                <i class="fas fa-chevron-down" style="font-size: 10px; opacity: 0.5;"></i>
+            </div>
+            <div id="eMenu" class="dropdown"></div>
         </div>
     </div>
-</section>
-
-<div class="content-info">
-    <h1 id="headTitle">INITIALIZING...</h1>
 </div>
 
-<!-- Feature Logos with Sky Blue Theme -->
-<div class="feature-bar">
-    <div class="feature-badge active"><i class="fas fa-tv"></i> 4K ULTRA</div>
-    <div class="feature-badge active"><i class="fas fa-volume-up"></i> DOLBY</div>
-    <div class="feature-badge"><i class="fas fa-wave-square"></i> HDR BLUE</div>
-    <div class="feature-badge"><i class="fas fa-closed-captioning"></i> EN-SUB</div>
-    <div class="feature-badge"><i class="fas fa-shield-check"></i> SECURE</div>
-</div>
-
-<main class="selection-container">
-    <div id="tvControls" style="display:none;">
-        <span class="label-text">Browse Seasons</span>
-        <div class="select-box" onclick="toggleDrop('seasonDrop')">
-            <span id="sLabel">Season 1</span>
-            <i class="fas fa-chevron-down" style="font-size: 0.6rem; opacity: 0.4;"></i>
-        </div>
-        <div id="seasonDrop" class="dropdown-content"></div>
-
-        <span class="label-text">Choose Episode</span>
-        <div class="select-box" onclick="toggleDrop('epDrop')">
-            <span id="eLabel">Episode 1</span>
-            <span class="runtime-tag" id="epRuntime">-- min</span>
-        </div>
-        <div id="epDrop" class="dropdown-content"></div>
+<section class="trending">
+    <div class="trending-header">
+        <span class="label">Popular Near You</span>
+        <span style="font-size: 10px; color: var(--brand-primary); font-weight: 700;">SEE ALL</span>
     </div>
-</main>
-
-<section class="rec-section">
-    <h2 class="label-text">Featured Premium</h2>
-    <div class="grid-5" id="recGrid"></div>
+    <div class="trending-grid" id="grid"></div>
 </section>
 
 <footer>
-    <p>&copy; 2026 JUSTWATCH-TV — Sky Blue Premium Streaming Experience</p>
+    <p>&copy; 2026 JUSTWATCH ENTERTAINMENT • ALL RIGHTS RESERVED</p>
 </footer>
 
 <script>
-    const API_KEY = '22be462e6d3de1dbab03d1ca50847b5a';
-    const CPA_URL = 'https://your-cpa-link.com';
-    let id, type, currentS = 1, currentE = 1, totalDuration = "00:00", seriesData;
+    const KEY = '22be462e6d3de1dbab03d1ca50847b5a';
+    let contentId, contentType, sIdx = 1, eIdx = 1;
 
-    const path = window.location.pathname.split("/").filter(Boolean);
-    if (path[0] === "tv") {
-        type = "tv"; id = path[1];
-        currentS = parseInt(path[2]) || 1; currentE = parseInt(path[3]) || 1;
-    } else if (path[0] === "movie") {
-        type = "movie"; id = path[1];
+    // Smart Routing
+    const urlParts = window.location.pathname.split('/').filter(Boolean);
+    if (urlParts[0] === 'tv') {
+        contentType = 'tv'; contentId = urlParts[1];
+        sIdx = parseInt(urlParts[2]) || 1; eIdx = parseInt(urlParts[3]) || 1;
+    } else if (urlParts[0] === 'movie') {
+        contentType = 'movie'; contentId = urlParts[1];
     } else {
-        const params = new URLSearchParams(window.location.search);
-        id = params.get('id'); type = params.get('type');
-        currentS = parseInt(params.get('s')) || 1; currentE = parseInt(params.get('e')) || 1;
+        const urlParams = new URLSearchParams(window.location.search);
+        contentId = urlParams.get('id'); contentType = urlParams.get('type');
     }
 
-    async function init() {
-        if (!id || !type) return;
+    async function bootstrap() {
+        if (!contentId) return;
         try {
-            const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}&language=en-US`);
-            const data = await res.json();
-            seriesData = data;
-
-            document.getElementById('headTitle').innerText = (data.title || data.name).toUpperCase();
+            const resp = await fetch(`https://api.themoviedb.org/3/${contentType}/${contentId}?api_key=${KEY}&language=en-US`);
+            const data = await resp.json();
             
-            if(type === 'movie') {
-                totalDuration = formatTime(data.runtime || 120);
-                updateTimer("00:00", totalDuration);
+            document.getElementById('mainTitle').innerText = (data.title || data.name).toUpperCase();
+            document.getElementById('subLabel').innerText = `${contentType.toUpperCase()} • ${data.release_date?.split('-')[0] || data.first_air_date?.split('-')[0]} • ${data.runtime || 45} MIN`;
+            
+            setBackdrop(data.backdrop_path);
+            
+            if (contentType === 'tv') {
+                document.getElementById('tvUI').style.display = 'block';
+                setupTV(data);
             }
-
-            updateBackdrop(data.backdrop_path);
-            if (type === 'tv') {
-                document.getElementById('tvControls').style.display = 'block';
-                renderSeasons();
-                loadEpisodes(currentS, currentE);
-            }
-            loadRecommendations();
-        } catch (e) { console.error(e); }
+            fetchTrending();
+        } catch (err) { console.error("Boot error:", err); }
     }
 
-    function formatTime(minutes) {
-        const h = Math.floor(minutes / 60);
-        const m = minutes % 60;
-        return `${h > 0 ? h + ":" : ""}${m < 10 && h > 0 ? "0" + m : m}:00`;
+    function setBackdrop(path) {
+        if (path) document.getElementById('stage').style.backgroundImage = `url('https://image.tmdb.org/t/p/original${path}')`;
     }
 
-    function updateTimer(current, total) {
-        document.getElementById('timerDisplay').innerText = `${current} / ${total}`;
-    }
-
-    function updateBackdrop(path) {
-        if (!path) return;
-        document.getElementById('backdropContainer').style.backgroundImage = `url('https://image.tmdb.org/t/p/w780${path}')`;
-    }
-
-    function showRegister() {
-        document.getElementById('playSymbol').className = "fas fa-spinner fa-spin";
+    function openAuth() {
+        const playBtn = document.getElementById('playUI');
+        playBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
         setTimeout(() => {
-            document.getElementById('regOverlay').style.display = 'flex';
-            document.getElementById('playIcon').style.display = 'none';
-        }, 500);
+            document.getElementById('authOverlay').style.display = 'flex';
+            playBtn.style.display = 'none';
+        }, 800);
     }
 
-    async function loadRecommendations() {
-        const grid = document.getElementById('recGrid');
-        const res = await fetch(`https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}`);
-        const data = await res.json();
-        grid.innerHTML = data.results.slice(0, 5).map(item => `
-            <a href="/${item.media_type}/${item.id}" class="rec-card">
-                <div class="rec-img" style="background-image: url('https://image.tmdb.org/t/p/w200${item.poster_path}')"></div>
-                <div class="rec-info">${item.name || item.title}</div>
+    async function fetchTrending() {
+        const resp = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${KEY}`);
+        const data = await resp.json();
+        const container = document.getElementById('grid');
+        container.innerHTML = data.results.slice(0, 6).map(m => `
+            <a href="/${m.media_type}/${m.id}" class="movie-card">
+                <div class="poster" style="background-image: url('https://image.tmdb.org/t/p/w300${m.poster_path}')"></div>
+                <div class="title-sm">${m.title || m.name}</div>
             </a>
         `).join('');
     }
 
-    function renderSeasons() {
-        const drop = document.getElementById('seasonDrop');
-        drop.innerHTML = seriesData.seasons.filter(s => s.season_number > 0).map(s => `
-            <div class="dropdown-item" onclick="selectSeason(${s.season_number})">Season ${s.season_number}</div>
+    function setupTV(data) {
+        const sMenu = document.getElementById('sMenu');
+        sMenu.innerHTML = data.seasons.filter(s => s.season_number > 0).map(s => `
+            <div class="drop-item" onclick="pickSeason(${s.season_number})">Season ${s.season_number}</div>
         `).join('');
-        document.getElementById('sLabel').innerText = `Season ${currentS}`;
+        loadEpisodes(sIdx, eIdx);
     }
 
-    function selectSeason(n) {
-        currentS = n;
-        document.getElementById('sLabel').innerText = `Season ${n}`;
-        toggleDrop('seasonDrop');
+    async function loadEpisodes(s, e) {
+        const resp = await fetch(`https://api.themoviedb.org/3/tv/${contentId}/season/${s}?api_key=${KEY}`);
+        const data = await resp.json();
+        const eMenu = document.getElementById('eMenu');
+        eMenu.innerHTML = data.episodes.map(ep => `
+            <div class="drop-item" onclick="pickEpisode(${s}, ${ep.episode_number}, '${ep.still_path}')">Episode ${ep.episode_number}: ${ep.name}</div>
+        `).join('');
+        
+        const current = data.episodes.find(ep => ep.episode_number === e) || data.episodes[0];
+        document.getElementById('eVal').innerText = `Episode ${current.episode_number}`;
+        document.getElementById('totalTime').innerText = `00:${current.runtime || 45}:00`;
+        if (current.still_path) setBackdrop(current.still_path);
+    }
+
+    function pickSeason(n) {
+        sIdx = n;
+        document.getElementById('sVal').innerText = `Season ${n}`;
+        toggleMenu('sMenu');
         loadEpisodes(n, 1);
     }
 
-    async function loadEpisodes(sNum, eNum = 1) {
-        const drop = document.getElementById('epDrop');
-        const res = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${sNum}?api_key=${API_KEY}`);
-        const data = await res.json();
-        const ep = data.episodes.find(ep => ep.episode_number == eNum) || data.episodes[0];
-        
-        updateBackdrop(ep.still_path || seriesData.backdrop_path);
-        document.getElementById('epRuntime').innerText = (ep.runtime || 45) + ' min';
-        totalDuration = formatTime(ep.runtime || 45);
-        updateTimer("00:00", totalDuration);
-
-        document.getElementById('regOverlay').style.display = 'none';
-        document.getElementById('playIcon').style.display = 'flex';
-        document.getElementById('playSymbol').className = "fas fa-play";
-
-        drop.innerHTML = data.episodes.map(e => `
-            <div class="dropdown-item" onclick="selectEpisode(${sNum}, ${e.episode_number}, '${e.still_path}', ${e.runtime})">
-                Ep ${e.episode_number}: ${e.name}
-            </div>
-        `).join('');
-        document.getElementById('eLabel').innerText = `Episode ${ep.episode_number}`;
+    function pickEpisode(s, e, img) {
+        eIdx = e;
+        document.getElementById('eVal').innerText = `Episode ${e}`;
+        toggleMenu('eMenu');
+        if (img) setBackdrop(img);
+        document.getElementById('authOverlay').style.display = 'none';
+        document.getElementById('playUI').style.display = 'flex';
+        document.getElementById('playUI').innerHTML = '<i class="fas fa-play" style="margin-left: 4px;"></i>';
     }
 
-    function selectEpisode(s, e, still, runtime) {
-        currentE = e;
-        document.getElementById('eLabel').innerText = `Episode ${e}`;
-        document.getElementById('epRuntime').innerText = (runtime || 45) + ' min';
-        totalDuration = formatTime(runtime || 45);
-        updateTimer("00:00", totalDuration);
-        toggleDrop('epDrop');
-        updateBackdrop(still !== 'null' ? still : seriesData.backdrop_path);
-        document.getElementById('regOverlay').style.display = 'none';
-        document.getElementById('playIcon').style.display = 'flex';
-        document.getElementById('playSymbol').className = "fas fa-play";
-    }
-
-    function toggleDrop(id) {
+    function toggleMenu(id) {
         const el = document.getElementById(id);
-        const isShow = el.style.display === 'block';
-        document.querySelectorAll('.dropdown-content').forEach(d => d.style.display = 'none');
-        el.style.display = isShow ? 'none' : 'block';
+        const isOpen = el.style.display === 'block';
+        document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+        el.style.display = isOpen ? 'none' : 'block';
     }
 
-    init();
+    bootstrap();
 </script>
+
 </body>
 </html>
