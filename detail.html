@@ -8,7 +8,7 @@
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%2210%22 y=%2220%22 width=%2280%22 height=%2260%22 rx=%2210%22 fill=%22%236d28d9%22/><path d=%22M40 35 L70 50 L40 65 Z%22 fill=%22white%22/></svg>">
 
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -28,39 +28,48 @@
 
         /* Header Style */
         header {
-            background: rgba(11, 1, 20, 0.9);
+            background: rgba(11, 1, 20, 0.95);
             backdrop-filter: blur(15px);
-            padding: 10px 15px;
+            padding: 12px 15px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid var(--border);
             position: sticky; top: 0; z-index: 1000;
-            gap: 10px;
+            gap: 15px;
         }
-        .header-left { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-        .logo-text { font-weight: 900; font-size: 1.1rem; letter-spacing: -0.5px; background: linear-gradient(to right, #ef4444, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-left { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        
+        /* Premium Logo Typography */
+        .logo-container { display: flex; align-items: center; gap: 5px; text-decoration: none; }
+        .logo-icon { 
+            background: var(--accent); width: 28px; height: 28px; border-radius: 6px; 
+            display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem;
+            box-shadow: 0 0 15px var(--glow);
+        }
+        .logo-text { 
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 1px;
+            background: linear-gradient(to bottom, #ffffff, #a78bfa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-top: 2px;
+        }
 
-        /* Custom Home Button Style */
         .home-btn { 
             color: white; 
-            background: linear-gradient(135deg, var(--purple), #4c1d95); 
-            width: 42px; height: 38px; border-radius: 8px; 
+            background: rgba(255,255,255,0.05);
+            width: 38px; height: 38px; border-radius: 10px; 
             display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+            text-decoration: none; border: 1px solid var(--border);
             transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
         }
-        .home-btn i { font-size: 1.2rem; }
-        .home-btn:active { transform: scale(0.9); }
+        .home-btn:hover { background: var(--purple); border-color: transparent; }
 
-        /* Search input mobile optimized */
+        /* Search input */
         .search-container { flex-grow: 1; position: relative; }
         .search-container input {
             width: 100%; background: rgba(255,255,255,0.05);
             border: 1px solid var(--border); padding: 8px 12px 8px 35px;
-            border-radius: 20px; color: white; font-size: 0.85rem; transition: 0.3s;
+            border-radius: 10px; color: white; font-size: 0.85rem;
         }
         .search-container i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.8rem; }
 
@@ -82,151 +91,179 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(11,1,20,0.7) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8));
         }
 
-        /* Improved Play Trigger Icon */
+        /* Register Overlay (CPA Lock) */
+        .register-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 10; display: none; flex-direction: column;
+            justify-content: center; align-items: center; padding: 20px; text-align: center;
+        }
+        .reg-box {
+            background: var(--surface); border: 1px solid var(--purple);
+            padding: 25px; border-radius: 20px; width: 90%; max-width: 350px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .reg-box h3 { font-size: 1.2rem; margin-bottom: 10px; color: white; }
+        .reg-box p { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 20px; }
+        .btn-reg {
+            display: block; width: 100%; background: var(--accent); color: white;
+            text-decoration: none; padding: 12px; border-radius: 10px; font-weight: 800;
+            font-size: 0.9rem; margin-bottom: 10px;
+        }
+        .btn-reg:hover { filter: brightness(1.2); }
+
+        /* Play Trigger Icon */
         .play-trigger {
             position: relative; z-index: 2;
-            width: 75px; height: 75px;
-            background: rgba(239, 68, 68, 0.9);
-            border: 4px solid rgba(255, 255, 255, 0.2);
+            width: 65px; height: 65px;
+            background: rgba(239, 68, 68, 0.95);
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            color: white; font-size: 1.8rem;
-            box-shadow: 0 0 30px var(--glow), inset 0 0 15px rgba(0,0,0,0.3);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(5px);
+            color: white; font-size: 1.5rem;
+            box-shadow: 0 0 30px var(--glow);
+            transition: 0.3s;
         }
-        .play-trigger i { margin-left: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        .play-trigger:hover { transform: scale(1.1); background: var(--accent); }
 
-        .fa-spinner { animation: spin 1s linear infinite; margin-left: 0 !important; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* Player Controls */
+        /* Player Controls Complete */
         .fake-controls {
             position: absolute; bottom: 0; left: 0; right: 0;
-            height: 50px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            height: 60px; background: linear-gradient(transparent, rgba(0,0,0,0.95));
             z-index: 3; display: flex; align-items: center; padding: 0 15px;
-            gap: 12px; font-size: 0.8rem;
+            gap: 15px; font-size: 0.9rem;
         }
-        .progress-bar-fake { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.2); }
-        .progress-fill-fake { width: 0%; height: 100%; background: var(--accent); transition: width 1s linear; }
+        .progress-bar-fake { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.1); }
+        .progress-fill-fake { width: 35%; height: 100%; background: var(--accent); }
+        .control-group { display: flex; align-items: center; gap: 15px; }
 
         /* Title & Meta */
         .content-info { padding: 20px 15px; }
-        #headTitle { font-size: 1.4rem; font-weight: 800; color: white; margin-bottom: 5px; text-transform: uppercase; }
+        #headTitle { font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 5px; }
         
         .toolbar { display: flex; gap: 10px; margin-bottom: 25px; }
         .btn-action {
             flex: 1; background: var(--surface); color: white; border: 1px solid var(--border);
-            padding: 10px; border-radius: 12px; font-weight: 700; font-size: 0.75rem;
+            padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.7rem;
             display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         .btn-action.primary { background: var(--accent); border: none; }
 
         /* Selection Dropdowns */
-        .selection-container { padding: 0 15px; margin-bottom: 40px; }
-        .label-text { font-size: 0.7rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
+        .selection-container { padding: 0 15px; margin-bottom: 30px; }
+        .label-text { font-size: 0.65rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
         .select-box {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 14px; padding: 15px;
+            border-radius: 12px; padding: 12px 15px;
             display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; margin-bottom: 12px;
+            cursor: pointer; margin-bottom: 10px; font-size: 0.85rem;
         }
         .dropdown-content {
-            background: #1f0d36; border: 1px solid var(--border); border-radius: 14px;
-            margin-top: -8px; margin-bottom: 12px; display: none; max-height: 250px; overflow-y: auto;
+            background: #1f0d36; border: 1px solid var(--border); border-radius: 12px;
+            margin-top: -5px; margin-bottom: 10px; display: none; max-height: 200px; overflow-y: auto;
         }
-        .dropdown-item { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 0.85rem; transition: 0.2s; }
-        .dropdown-item:hover { background: var(--purple); color: white; }
+        .dropdown-item { padding: 10px 15px; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
 
-        /* Recommendations Horizontal Scroll */
-        .rec-section { margin-top: 20px; padding-bottom: 30px; }
+        /* Recommendations Horizontal Scroll - Smaller & Cleaner */
+        .rec-section { margin-top: 10px; padding-bottom: 20px; border-top: 1px solid var(--border); padding-top: 20px; }
         .scroll-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 12px;
-            padding: 10px 15px;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none;
+            display: flex; overflow-x: auto; gap: 10px;
+            padding: 5px 15px; scroll-snap-type: x mandatory; scrollbar-width: none;
         }
         .scroll-container::-webkit-scrollbar { display: none; }
 
-        .rec-card {
-            flex: 0 0 110px;
-            scroll-snap-align: start;
-            text-decoration: none;
-            color: white;
-        }
+        .rec-card { flex: 0 0 90px; text-decoration: none; color: white; }
         .rec-img { 
-            width: 100%; aspect-ratio: 2/3; border-radius: 10px; 
+            width: 100%; aspect-ratio: 2/3; border-radius: 8px; 
             background-size: cover; background-position: center;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            margin-bottom: 6px;
+            border: 1px solid rgba(255,255,255,0.05); margin-bottom: 5px;
         }
-        .rec-info { font-size: 0.7rem; font-weight: 600; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .rec-info { font-size: 0.6rem; font-weight: 600; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0.8; }
 
-        footer { text-align: center; padding: 30px; opacity: 0.4; font-size: 0.7rem; border-top: 1px solid var(--border); }
+        footer { text-align: center; padding: 30px; opacity: 0.3; font-size: 0.65rem; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="header-left">
-        <a href="/" class="home-btn"><i class="fas fa-home"></i></a>
-        <span class="logo-text">JUSTWATCH-TV</span>
+        <a href="/" class="logo-container">
+            <div class="logo-icon"><i class="fas fa-play"></i></div>
+            <span class="logo-text">JUSTWATCH</span>
+        </a>
     </div>
 
     <div class="search-container">
         <i class="fas fa-search"></i>
-        <input type="text" placeholder="Search..." onkeyup="if(event.key === 'Enter') window.location.href='/?search='+this.value">
+        <input type="text" placeholder="Cari..." onkeyup="if(event.key === 'Enter') window.location.href='/?search='+this.value">
     </div>
+
+    <a href="/" class="home-btn"><i class="fas fa-home"></i></a>
 </header>
 
 <section class="video-stage">
-    <div class="fake-player" id="backdropContainer" onclick="togglePlay()">
+    <div class="fake-player" id="backdropContainer" onclick="showRegister()">
         <div class="play-trigger" id="playIcon">
             <i class="fas fa-play" id="playSymbol"></i>
         </div>
-        <div class="fake-controls">
-            <div class="progress-bar-fake">
-                <div class="progress-fill-fake" id="fakeProgress"></div>
+        
+        <!-- CPA Register Lock -->
+        <div class="register-overlay" id="regOverlay" onclick="event.stopPropagation()">
+            <div class="reg-box">
+                <i class="fas fa-lock" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px;"></i>
+                <h3>KONTEN TERKUNCI</h3>
+                <p>Silahkan daftar akun gratis untuk melanjutkan streaming dalam kualitas Ultra HD 4K.</p>
+                <a href="https://your-cpa-link.com" class="btn-reg">DAFTAR GRATIS</a>
+                <p style="font-size: 0.6rem; margin-bottom: 0;">Tanpa biaya, proses hanya 1 menit.</p>
             </div>
-            <i class="fas fa-play" id="smallPlayBtn"></i>
-            <span id="timerDisplay">00:00:00 / 00:00:00</span>
-            <i class="fas fa-expand" style="margin-left: auto;"></i>
+        </div>
+
+        <div class="fake-controls">
+            <div class="progress-bar-fake"><div class="progress-fill-fake"></div></div>
+            <div class="control-group">
+                <i class="fas fa-play"></i>
+                <i class="fas fa-step-forward"></i>
+                <i class="fas fa-volume-up"></i>
+            </div>
+            <span id="timerDisplay" style="font-size: 0.7rem;">00:42:15 / 02:15:00</span>
+            <div class="control-group" style="margin-left: auto;">
+                <i class="fas fa-closed-captioning"></i>
+                <i class="fas fa-cog"></i>
+                <i class="fas fa-expand"></i>
+            </div>
         </div>
     </div>
 </section>
 
 <div class="content-info">
-    <h1 id="headTitle">LOADING...</h1>
+    <h1 id="headTitle">MEMUAT...</h1>
     <div class="toolbar">
-        <button class="btn-action primary" onclick="togglePlay()">
-            <i class="fas fa-play"></i> <span>WATCH NOW</span>
+        <button class="btn-action primary" onclick="showRegister()">
+            <i class="fas fa-play"></i> <span>NONTON SEKARANG</span>
         </button>
         <button class="btn-action" onclick="shareMovie()">
-            <i class="fas fa-share-alt"></i> <span>SHARE</span>
+            <i class="fas fa-plus"></i> <span>DAFTAR PUTAR</span>
+        </button>
+        <button class="btn-action" onclick="shareMovie()">
+            <i class="fas fa-download"></i> <span>UNDUH</span>
         </button>
     </div>
 </div>
 
 <main class="selection-container">
     <div id="tvControls" style="display:none;">
-        <span class="label-text">Seasons</span>
+        <span class="label-text">Pilih Musim</span>
         <div class="select-box" onclick="toggleDrop('seasonDrop')">
             <div style="display:flex; align-items:center; gap:10px; font-weight:700;">
-                <i class="fas fa-folder" style="color:var(--purple);"></i> 
+                <i class="fas fa-list-ul" style="color:var(--purple);"></i> 
                 <span id="sLabel">Season 1</span>
             </div>
             <i class="fas fa-chevron-down"></i>
         </div>
         <div id="seasonDrop" class="dropdown-content"></div>
 
-        <span class="label-text">Episodes</span>
+        <span class="label-text">Pilih Episode</span>
         <div class="select-box" onclick="toggleDrop('epDrop')">
             <div style="display:flex; align-items:center; gap:10px; font-weight:700;">
                 <i class="fas fa-play-circle" style="color:var(--accent);"></i> 
@@ -239,25 +276,20 @@
 </main>
 
 <section class="rec-section">
-    <h2 class="label-text" style="padding-left: 15px;">Trending Recommendations</h2>
+    <h2 class="label-text" style="padding-left: 15px; margin-bottom: 10px;">Trending Hari Ini</h2>
     <div class="scroll-container" id="recGrid">
         <!-- Recommendations -->
     </div>
 </section>
 
 <footer>
-    <p>&copy; 2026 JUSTWATCH-TV. All Rights Reserved.</p>
+    <p>&copy; 2026 JUSTWATCH Premium. All Rights Reserved.</p>
 </footer>
 
 <script>
     const API_KEY = '22be462e6d3de1dbab03d1ca50847b5a';
     let id, type, currentS = 1, currentE = 1;
     let seriesData = null;
-    
-    let isPlaying = false;
-    let currentTime = 0;
-    let totalSeconds = 0;
-    let timerInterval = null;
 
     const path = window.location.pathname.split("/").filter(Boolean);
     if (path[0] === "tv") {
@@ -274,20 +306,16 @@
     async function init() {
         if (!id || !type) return;
         try {
-            const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}`);
+            const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}&language=id-ID`);
             const data = await res.json();
             seriesData = data;
 
             document.getElementById('headTitle').innerText = (data.title || data.name).toUpperCase();
-            document.title = (data.title || data.name) + " — JustWatch-TV";
+            document.title = (data.title || data.name) + " — Nonton di JustWatch";
 
-            // Set initial backdrop (default for movie/series)
             updateBackdrop(data.backdrop_path);
 
-            if (type === 'movie') {
-                totalSeconds = (data.runtime || 115) * 60;
-                updateTimerDisplay();
-            } else if (type === 'tv') {
+            if (type === 'tv') {
                 document.getElementById('tvControls').style.display = 'block';
                 renderSeasons();
                 loadEpisodes(currentS, currentE);
@@ -302,69 +330,28 @@
         document.getElementById('backdropContainer').style.backgroundImage = `url('${backdropUrl}')`;
     }
 
+    function showRegister() {
+        const playSymbol = document.getElementById('playSymbol');
+        playSymbol.className = "fas fa-spinner fa-spin";
+        
+        setTimeout(() => {
+            document.getElementById('regOverlay').style.display = 'flex';
+            document.getElementById('playIcon').style.display = 'none';
+        }, 1200);
+    }
+
     async function loadRecommendations() {
         const grid = document.getElementById('recGrid');
         try {
             const res = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}`);
             const data = await res.json();
-            grid.innerHTML = data.results.slice(0, 10).map(item => `
+            grid.innerHTML = data.results.slice(0, 15).map(item => `
                 <a href="/${item.media_type}/${item.id}" class="rec-card">
-                    <div class="rec-img" style="background-image: url('https://image.tmdb.org/t/p/w300${item.poster_path}')"></div>
+                    <div class="rec-img" style="background-image: url('https://image.tmdb.org/t/p/w200${item.poster_path}')"></div>
                     <div class="rec-info">${item.name || item.title}</div>
                 </a>
             `).join('');
         } catch (e) { grid.innerHTML = ''; }
-    }
-
-    function formatTime(sec) {
-        const h = Math.floor(sec / 3600);
-        const m = Math.floor((sec % 3600) / 60);
-        const s = sec % 60;
-        return [h, m, s].map(v => v < 10 ? "0" + v : v).join(":");
-    }
-
-    function updateTimerDisplay() {
-        document.getElementById('timerDisplay').innerText = `${formatTime(currentTime)} / ${formatTime(totalSeconds)}`;
-        const percent = totalSeconds > 0 ? (currentTime / totalSeconds) * 100 : 0;
-        document.getElementById('fakeProgress').style.width = percent + "%";
-    }
-
-    function togglePlay() {
-        const playIcon = document.getElementById('playIcon');
-        const playSymbol = document.getElementById('playSymbol');
-        const smallPlay = document.getElementById('smallPlayBtn');
-
-        if (!isPlaying) {
-            playSymbol.className = "fas fa-spinner";
-            setTimeout(() => {
-                isPlaying = true;
-                playIcon.style.opacity = '0';
-                playIcon.style.pointerEvents = 'none';
-                smallPlay.className = 'fas fa-pause';
-                timerInterval = setInterval(() => {
-                    if (currentTime < totalSeconds) { currentTime++; updateTimerDisplay(); }
-                    else { resetTimer(); }
-                }, 1000);
-            }, 800);
-        } else {
-            isPlaying = false;
-            playIcon.style.opacity = '1';
-            playIcon.style.pointerEvents = 'auto';
-            playSymbol.className = "fas fa-play";
-            smallPlay.className = 'fas fa-play';
-            clearInterval(timerInterval);
-        }
-    }
-
-    function resetTimer() {
-        clearInterval(timerInterval);
-        isPlaying = false;
-        currentTime = 0;
-        document.getElementById('playIcon').style.opacity = '1';
-        document.getElementById('playIcon').style.pointerEvents = 'auto';
-        document.getElementById('playSymbol').className = "fas fa-play";
-        document.getElementById('smallPlayBtn').className = 'fas fa-play';
-        updateTimerDisplay();
     }
 
     function renderSeasons() {
@@ -388,15 +375,14 @@
         try {
             const res = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${sNum}?api_key=${API_KEY}`);
             const data = await res.json();
-            
-            // Set default episode logic
             const targetEp = data.episodes.find(ep => ep.episode_number == eNum) || data.episodes[0];
-            totalSeconds = (targetEp.runtime || 45) * 60;
             
-            // Auto Update Backdrop for current episode
             updateBackdrop(targetEp.still_path || seriesData.backdrop_path);
             
-            resetTimer();
+            // Close register if it was open to reset state
+            document.getElementById('regOverlay').style.display = 'none';
+            document.getElementById('playIcon').style.display = 'flex';
+            document.getElementById('playSymbol').className = "fas fa-play";
 
             drop.innerHTML = data.episodes.map(ep => `
                 <div class="dropdown-item" onclick="selectEpisode(${sNum}, ${ep.episode_number}, '${ep.still_path}')">E${ep.episode_number}: ${ep.name}</div>
@@ -410,20 +396,15 @@
         document.getElementById('eLabel').innerText = `Episode ${e}`;
         toggleDrop('epDrop');
         
-        // Reload backdrop based on episode still_path
-        if (stillPath && stillPath !== 'null') {
-            updateBackdrop(stillPath);
-        } else {
-            updateBackdrop(seriesData.backdrop_path);
-        }
+        if (stillPath && stillPath !== 'null') updateBackdrop(stillPath);
+        else updateBackdrop(seriesData.backdrop_path);
 
         history.replaceState(null, "", `/tv/${id}/${s}/${e}`);
-        resetTimer();
         
-        // Auto Play Feel: Start loading icon when episode changed
-        const playSymbol = document.getElementById('playSymbol');
-        playSymbol.className = "fas fa-spinner";
-        setTimeout(() => { playSymbol.className = "fas fa-play"; }, 600);
+        // Reset player UI
+        document.getElementById('regOverlay').style.display = 'none';
+        document.getElementById('playIcon').style.display = 'flex';
+        document.getElementById('playSymbol').className = "fas fa-play";
     }
 
     function toggleDrop(dropId) {
@@ -435,7 +416,7 @@
 
     function shareMovie() {
         if(navigator.share) navigator.share({ title: document.title, url: window.location.href });
-        else alert("Link copied!");
+        else alert("Link disalin!");
     }
 
     init();
