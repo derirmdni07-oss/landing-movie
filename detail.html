@@ -15,8 +15,8 @@
         :root {
             --bg: #05010a;
             --surface: #0f051a;
-            --accent: #ff004c; /* Vibrant Red */
-            --purple: #8b5cf6; /* Vibrant Purple */
+            --accent: #ff004c;
+            --purple: #8b5cf6;
             --text: #ffffff;
             --text-dim: #94a3b8;
             --border: rgba(139, 92, 246, 0.15);
@@ -26,11 +26,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.5; }
 
-        /* Header Style */
+        /* Enhanced Header */
         header {
-            background: rgba(5, 1, 10, 0.9);
-            backdrop-filter: blur(20px);
-            padding: 10px 15px;
+            background: rgba(5, 1, 10, 0.95);
+            backdrop-filter: blur(25px);
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -38,23 +38,24 @@
             position: sticky; top: 0; z-index: 1000;
         }
 
-        .logo-container { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .logo-box {
-            position: relative; width: 32px; height: 32px;
+            position: relative; width: 34px; height: 34px;
             background: linear-gradient(135deg, var(--purple), var(--accent));
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
             box-shadow: 0 0 15px var(--glow);
         }
-        .logo-box::after { content: ''; position: absolute; inset: 2px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; }
         .logo-text { 
-            font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.5px;
-            background: linear-gradient(to right, #fff, #8b5cf6);
+            font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, #ff004c);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            font-weight: normal;
         }
+        .logo-text span { color: var(--purple); -webkit-text-fill-color: var(--purple); font-size: 1rem; vertical-align: middle; margin-left: -2px; }
 
         .home-btn { 
-            color: white; background: rgba(255,255,255,0.05);
-            width: 35px; height: 35px; border-radius: 50%; 
+            color: white; background: rgba(255,255,255,0.08);
+            width: 38px; height: 38px; border-radius: 12px; 
             display: flex; align-items: center; justify-content: center; 
             text-decoration: none; border: 1px solid var(--border);
         }
@@ -74,101 +75,106 @@
         }
         .fake-player::before {
             content: ''; position: absolute; inset: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             z-index: 1;
         }
 
-        /* CPA Register Lock - Smaller & Centered for Mobile */
+        /* Minimalist Small Pop-up (Pas untuk HP) */
         .register-overlay {
             position: absolute; inset: 0;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-            z-index: 20; display: none; flex-direction: column;
-            justify-content: center; align-items: center; padding: 15px; text-align: center;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+            z-index: 20; display: none; 
+            justify-content: center; align-items: center; padding: 10px;
         }
         .reg-box {
-            background: var(--surface); border: 1px solid var(--purple);
-            padding: 20px; border-radius: 18px; width: 90%; max-width: 300px;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-            animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            background: rgba(15, 5, 26, 0.95); 
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            padding: 18px; border-radius: 20px; 
+            width: 85%; max-width: 260px; /* Ukuran Mini */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            animation: miniPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes miniPop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
-        .reg-box h3 { font-size: 1.1rem; margin-bottom: 8px; color: #fff; font-weight: 800; }
-        .reg-box p { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 15px; line-height: 1.3; }
+        .reg-box h3 { font-size: 0.95rem; margin-bottom: 6px; color: #fff; font-weight: 800; letter-spacing: 0.5px; }
+        .reg-box p { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 15px; line-height: 1.4; }
         
         .cpa-link {
             display: block; width: 100%; background: linear-gradient(to right, var(--purple), var(--accent));
-            color: white; text-decoration: none; padding: 12px; border-radius: 10px;
-            font-weight: 800; font-size: 0.85rem; margin-bottom: 8px; text-transform: uppercase;
+            color: white; text-decoration: none; padding: 10px; border-radius: 12px;
+            font-weight: 800; font-size: 0.75rem; text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 0, 76, 0.3);
         }
 
         /* Minimal Controls */
         .fake-controls {
             position: absolute; bottom: 0; left: 0; right: 0;
-            height: 40px; background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            z-index: 10; display: flex; align-items: center; padding: 0 10px;
-            gap: 10px; font-size: 0.75rem;
+            height: 35px; background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            z-index: 10; display: flex; align-items: center; padding: 0 12px;
+            gap: 12px; font-size: 0.7rem;
         }
-        .progress-bar { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.2); }
+        .progress-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.15); }
         .progress-fill { width: 0%; height: 100%; background: var(--accent); }
 
         .play-trigger {
             position: relative; z-index: 5;
-            width: 55px; height: 55px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            border: 2px solid #fff;
+            width: 50px; height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255,255,255,0.4);
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            color: white; font-size: 1.4rem;
+            color: white; font-size: 1.2rem;
+            transition: 0.3s;
         }
 
         /* Content Info */
-        .content-info { padding: 15px; }
-        #headTitle { font-size: 1.2rem; font-weight: 800; color: white; margin-bottom: 12px; }
+        .content-info { padding: 18px 15px; }
+        #headTitle { font-size: 1.3rem; font-weight: 800; color: white; margin-bottom: 15px; letter-spacing: -0.5px; }
         
-        .toolbar { display: flex; gap: 8px; margin-bottom: 20px; }
+        .toolbar { display: flex; gap: 8px; margin-bottom: 25px; }
         .btn-action {
             flex: 1; background: var(--surface); color: white; border: 1px solid var(--border);
-            padding: 10px; border-radius: 10px; font-weight: 700; font-size: 0.7rem;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 12px; border-radius: 14px; font-weight: 700; font-size: 0.75rem;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
         .btn-action.primary { background: linear-gradient(to right, var(--purple), var(--accent)); border: none; }
 
         /* Selectors */
-        .selection-container { padding: 0 15px; margin-bottom: 25px; }
-        .label-text { font-size: 0.65rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 6px; display: block; letter-spacing: 1px; }
+        .selection-container { padding: 0 15px; margin-bottom: 30px; }
+        .label-text { font-size: 0.65rem; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1.2px; }
         .select-box {
             background: var(--surface); border: 1px solid var(--border);
-            border-radius: 10px; padding: 12px;
+            border-radius: 12px; padding: 14px;
             display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; margin-bottom: 8px; font-size: 0.85rem;
+            cursor: pointer; margin-bottom: 10px; font-size: 0.9rem;
         }
         .dropdown-content {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
-            margin-top: -5px; margin-bottom: 10px; display: none; max-height: 200px; overflow-y: auto;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+            margin-top: -5px; margin-bottom: 10px; display: none; max-height: 220px; overflow-y: auto;
         }
-        .dropdown-item { padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+        .dropdown-item { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
 
         /* Recommendations */
-        .rec-section { margin-top: 10px; border-top: 1px solid var(--border); padding: 15px; }
-        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        .rec-section { margin-top: 10px; border-top: 1px solid var(--border); padding: 20px 15px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
         .rec-card { text-decoration: none; color: white; }
-        .rec-img { width: 100%; aspect-ratio: 2/3; border-radius: 4px; background-size: cover; background-position: center; }
-        .rec-info { font-size: 0.5rem; font-weight: 600; text-align: center; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .rec-img { width: 100%; aspect-ratio: 2/3; border-radius: 6px; background-size: cover; background-position: center; border: 1px solid var(--border); }
+        .rec-info { font-size: 0.55rem; font-weight: 600; text-align: center; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        footer { text-align: center; padding: 30px 15px; opacity: 0.4; font-size: 0.65rem; border-top: 1px solid var(--border); }
-        .runtime-tag { font-size: 0.6rem; background: rgba(255,255,255,0.1); padding: 2px 5px; border-radius: 3px; color: var(--text-dim); margin-left: auto; }
+        footer { text-align: center; padding: 40px 15px; opacity: 0.5; font-size: 0.7rem; border-top: 1px solid var(--border); color: var(--text-dim); }
+        .runtime-tag { font-size: 0.65rem; background: rgba(139, 92, 246, 0.2); padding: 3px 7px; border-radius: 6px; color: var(--purple); margin-left: auto; font-weight: 700; }
     </style>
 </head>
 <body>
 
 <header>
     <a href="/" class="logo-container">
-        <div class="logo-box"><i class="fas fa-play" style="font-size: 10px;"></i></div>
-        <span class="logo-text">JUSTWATCH</span>
+        <div class="logo-box"><i class="fas fa-play" style="font-size: 11px;"></i></div>
+        <span class="logo-text">JUSTWATCH<span>-TV</span></span>
     </a>
-    <a href="/" class="home-btn"><i class="fas fa-search" style="font-size: 12px;"></i></a>
+    <a href="/" class="home-btn"><i class="fas fa-search" style="font-size: 14px;"></i></a>
 </header>
 
 <section class="video-stage">
@@ -177,23 +183,24 @@
             <i class="fas fa-play" id="playSymbol" style="margin-left: 3px;"></i>
         </div>
         
-        <!-- Smaller Mobile Pop-up -->
+        <!-- Smallest Mini Pop-up -->
         <div class="register-overlay" id="regOverlay" onclick="event.stopPropagation()">
             <div class="reg-box">
-                <i class="fas fa-user-lock" style="font-size: 1.8rem; color: var(--purple); margin-bottom: 10px;"></i>
-                <h3>PREMIUM ACCESS</h3>
-                <p>Register a free account to unlock Ultra HD streaming for <b>USA/UK/AU</b> viewers.</p>
-                <a href="https://your-cpa-link.com" class="cpa-link">CONTINUE FREE</a>
-                <p style="font-size: 0.6rem; opacity: 0.6;">Safe & Secure Verification</p>
+                <div style="width: 40px; height: 40px; background: rgba(255,0,76,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                    <i class="fas fa-shield-alt" style="font-size: 1.2rem; color: var(--accent);"></i>
+                </div>
+                <h3>VERIFIKASI</h3>
+                <p>Silahkan daftar akun gratis untuk menonton dalam kualitas <b>Ultra HD</b>.</p>
+                <a href="https://your-cpa-link.com" class="cpa-link">DAFTAR SEKARANG</a>
             </div>
         </div>
 
         <div class="fake-controls">
             <div class="progress-bar"><div class="progress-fill"></div></div>
             <i class="fas fa-play"></i>
-            <span id="timerDisplay" style="font-size: 0.6rem; font-weight: 700; font-family: monospace;">00:00 / --:--</span>
-            <div style="margin-left: auto; display: flex; gap: 10px;">
-                <i class="fas fa-cog"></i>
+            <span id="timerDisplay" style="font-weight: 700; font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px;">00:00 / --:--</span>
+            <div style="margin-left: auto; display: flex; gap: 12px; opacity: 0.7;">
+                <i class="fas fa-closed-captioning"></i>
                 <i class="fas fa-expand"></i>
             </div>
         </div>
@@ -201,15 +208,15 @@
 </section>
 
 <div class="content-info">
-    <h1 id="headTitle">LOADING...</h1>
+    <h1 id="headTitle">MEMUAT...</h1>
     <div class="toolbar">
         <button class="btn-action primary" onclick="redirectToCPA()">
-            <i class="fas fa-play"></i> <span>WATCH NOW</span>
+            <i class="fas fa-play"></i> <span>PUTAR</span>
         </button>
         <button class="btn-action" onclick="redirectToCPA()">
-            <i class="fas fa-download"></i> <span>DOWNLOAD</span>
+            <i class="fas fa-download"></i> <span>UNDUH</span>
         </button>
-        <button class="btn-action" style="flex: 0.3;" onclick="shareMovie()">
+        <button class="btn-action" style="flex: 0.25;" onclick="shareMovie()">
             <i class="fas fa-share-alt"></i>
         </button>
     </div>
@@ -217,35 +224,35 @@
 
 <main class="selection-container">
     <div id="tvControls" style="display:none;">
-        <span class="label-text">Season</span>
+        <span class="label-text">Pilih Musim</span>
         <div class="select-box" onclick="toggleDrop('seasonDrop')">
             <span id="sLabel">Season 1</span>
-            <i class="fas fa-chevron-down" style="font-size: 0.6rem; opacity: 0.5;"></i>
+            <i class="fas fa-chevron-down" style="font-size: 0.7rem; opacity: 0.4;"></i>
         </div>
         <div id="seasonDrop" class="dropdown-content"></div>
 
-        <span class="label-text">Episode</span>
+        <span class="label-text">Pilih Episode</span>
         <div class="select-box" onclick="toggleDrop('epDrop')">
             <span id="eLabel">Episode 1</span>
-            <span class="runtime-tag" id="epRuntime">-- min</span>
+            <span class="runtime-tag" id="epRuntime">-- mnt</span>
         </div>
         <div id="epDrop" class="dropdown-content"></div>
     </div>
 </main>
 
 <section class="rec-section">
-    <h2 class="label-text">Trending Now</h2>
+    <h2 class="label-text">Sedang Tren</h2>
     <div class="grid-5" id="recGrid"></div>
 </section>
 
 <footer>
-    <p>&copy; 2026 JUSTWATCH — Ultra HD Streaming</p>
+    <p>&copy; 2026 JUSTWATCH-TV — Streaming Premium</p>
 </footer>
 
 <script>
     const API_KEY = '22be462e6d3de1dbab03d1ca50847b5a';
     const CPA_URL = 'https://your-cpa-link.com';
-    let id, type, currentS = 1, currentE = 1, totalDuration = "00:00";
+    let id, type, currentS = 1, currentE = 1, totalDuration = "00:00", seriesData;
 
     const path = window.location.pathname.split("/").filter(Boolean);
     if (path[0] === "tv") {
@@ -262,7 +269,7 @@
     async function init() {
         if (!id || !type) return;
         try {
-            const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}&language=en-US`);
+            const res = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}&language=id-ID`);
             const data = await res.json();
             seriesData = data;
 
@@ -303,7 +310,7 @@
         setTimeout(() => {
             document.getElementById('regOverlay').style.display = 'flex';
             document.getElementById('playIcon').style.display = 'none';
-        }, 800);
+        }, 600);
     }
 
     function redirectToCPA() { window.location.href = CPA_URL; }
@@ -342,7 +349,7 @@
         const ep = data.episodes.find(ep => ep.episode_number == eNum) || data.episodes[0];
         
         updateBackdrop(ep.still_path || seriesData.backdrop_path);
-        document.getElementById('epRuntime').innerText = (ep.runtime || 45) + ' min';
+        document.getElementById('epRuntime').innerText = (ep.runtime || 45) + ' mnt';
         totalDuration = formatTime(ep.runtime || 45);
         updateTimer("00:00", totalDuration);
 
@@ -361,7 +368,7 @@
     function selectEpisode(s, e, still, runtime) {
         currentE = e;
         document.getElementById('eLabel').innerText = `Episode ${e}`;
-        document.getElementById('epRuntime').innerText = (runtime || 45) + ' min';
+        document.getElementById('epRuntime').innerText = (runtime || 45) + ' mnt';
         totalDuration = formatTime(runtime || 45);
         updateTimer("00:00", totalDuration);
         toggleDrop('epDrop');
