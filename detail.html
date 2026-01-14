@@ -20,7 +20,7 @@
             --text: #ffffff;
             --text-dim: #a78bfa;
             --border: rgba(139, 92, 246, 0.2);
-            --glow: rgba(239, 68, 68, 0.3);
+            --glow: rgba(239, 68, 68, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
@@ -41,12 +41,19 @@
         .header-left { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         .logo-text { font-weight: 900; font-size: 1.1rem; letter-spacing: -0.5px; background: linear-gradient(to right, #ef4444, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
+        /* Custom Home Button Style */
         .home-btn { 
-            color: white; background: var(--purple); 
-            width: 35px; height: 35px; border-radius: 10px; 
+            color: white; 
+            background: linear-gradient(135deg, var(--purple), #4c1d95); 
+            width: 42px; height: 38px; border-radius: 8px; 
             display: flex; align-items: center; justify-content: center; 
-            text-decoration: none; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4); transition: 0.3s;
+            text-decoration: none; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
         }
+        .home-btn i { font-size: 1.2rem; }
+        .home-btn:active { transform: scale(0.9); }
 
         /* Search input mobile optimized */
         .search-container { flex-grow: 1; position: relative; }
@@ -57,7 +64,7 @@
         }
         .search-container i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-size: 0.8rem; }
 
-        /* Video Stage (Mobile Height Adjustment) */
+        /* Video Stage */
         .video-stage { width: 100%; background: #000; position: relative; overflow: hidden; }
         .fake-player {
             width: 100%;
@@ -69,6 +76,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            transition: background-image 0.5s ease;
         }
         .fake-player::after {
             content: '';
@@ -77,17 +85,23 @@
             background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(11,1,20,0.7) 100%);
         }
 
+        /* Improved Play Trigger Icon */
         .play-trigger {
             position: relative; z-index: 2;
-            width: 65px; height: 65px;
-            background: linear-gradient(135deg, var(--accent), var(--purple));
+            width: 75px; height: 75px;
+            background: rgba(239, 68, 68, 0.9);
+            border: 4px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            color: white; font-size: 1.5rem;
-            box-shadow: 0 0 25px var(--glow);
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: white; font-size: 1.8rem;
+            box-shadow: 0 0 30px var(--glow), inset 0 0 15px rgba(0,0,0,0.3);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
         }
-        .fa-spinner { animation: spin 1s linear infinite; }
+        .play-trigger i { margin-left: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .play-trigger:hover { transform: scale(1.1); background: var(--accent); }
+
+        .fa-spinner { animation: spin 1s linear infinite; margin-left: 0 !important; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* Player Controls */
@@ -123,9 +137,10 @@
         }
         .dropdown-content {
             background: #1f0d36; border: 1px solid var(--border); border-radius: 14px;
-            margin-top: -8px; margin-bottom: 12px; display: none; max-height: 200px; overflow-y: auto;
+            margin-top: -8px; margin-bottom: 12px; display: none; max-height: 250px; overflow-y: auto;
         }
-        .dropdown-item { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        .dropdown-item { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 0.85rem; transition: 0.2s; }
+        .dropdown-item:hover { background: var(--purple); color: white; }
 
         /* Recommendations Horizontal Scroll */
         .rec-section { margin-top: 20px; padding-bottom: 30px; }
@@ -135,12 +150,12 @@
             gap: 12px;
             padding: 10px 15px;
             scroll-snap-type: x mandatory;
-            scrollbar-width: none; /* Hide scrollbar Firefox */
+            scrollbar-width: none;
         }
-        .scroll-container::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+        .scroll-container::-webkit-scrollbar { display: none; }
 
         .rec-card {
-            flex: 0 0 110px; /* Width for mobile cards */
+            flex: 0 0 110px;
             scroll-snap-align: start;
             text-decoration: none;
             color: white;
@@ -226,7 +241,7 @@
 <section class="rec-section">
     <h2 class="label-text" style="padding-left: 15px;">Trending Recommendations</h2>
     <div class="scroll-container" id="recGrid">
-        <!-- Horizontal cards will be injected here -->
+        <!-- Recommendations -->
     </div>
 </section>
 
@@ -236,7 +251,7 @@
 
 <script>
     const API_KEY = '22be462e6d3de1dbab03d1ca50847b5a';
-    let id, type, sUrl = 1, eUrl = 1;
+    let id, type, currentS = 1, currentE = 1;
     let seriesData = null;
     
     let isPlaying = false;
@@ -247,13 +262,13 @@
     const path = window.location.pathname.split("/").filter(Boolean);
     if (path[0] === "tv") {
         type = "tv"; id = path[1];
-        sUrl = parseInt(path[2]) || 1; eUrl = parseInt(path[3]) || 1;
+        currentS = parseInt(path[2]) || 1; currentE = parseInt(path[3]) || 1;
     } else if (path[0] === "movie") {
         type = "movie"; id = path[1];
     } else {
         const params = new URLSearchParams(window.location.search);
         id = params.get('id'); type = params.get('type');
-        sUrl = parseInt(params.get('s')) || 1; eUrl = parseInt(params.get('e')) || 1;
+        currentS = parseInt(params.get('s')) || 1; currentE = parseInt(params.get('e')) || 1;
     }
 
     async function init() {
@@ -266,10 +281,8 @@
             document.getElementById('headTitle').innerText = (data.title || data.name).toUpperCase();
             document.title = (data.title || data.name) + " — JustWatch-TV";
 
-            if (data.backdrop_path) {
-                const backdropUrl = `https://image.tmdb.org/t/p/w780${data.backdrop_path}`;
-                document.getElementById('backdropContainer').style.backgroundImage = `url('${backdropUrl}')`;
-            }
+            // Set initial backdrop (default for movie/series)
+            updateBackdrop(data.backdrop_path);
 
             if (type === 'movie') {
                 totalSeconds = (data.runtime || 115) * 60;
@@ -277,10 +290,16 @@
             } else if (type === 'tv') {
                 document.getElementById('tvControls').style.display = 'block';
                 renderSeasons();
-                loadEpisodes(sUrl, eUrl);
+                loadEpisodes(currentS, currentE);
             }
             loadRecommendations();
-        } catch (e) { console.error("API Error"); }
+        } catch (e) { console.error("API Error", e); }
+    }
+
+    function updateBackdrop(path) {
+        if (!path) return;
+        const backdropUrl = `https://image.tmdb.org/t/p/w780${path}`;
+        document.getElementById('backdropContainer').style.backgroundImage = `url('${backdropUrl}')`;
     }
 
     async function loadRecommendations() {
@@ -288,8 +307,7 @@
         try {
             const res = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}`);
             const data = await res.json();
-            // Show only top 8 for beauty
-            grid.innerHTML = data.results.slice(0, 8).map(item => `
+            grid.innerHTML = data.results.slice(0, 10).map(item => `
                 <a href="/${item.media_type}/${item.id}" class="rec-card">
                     <div class="rec-img" style="background-image: url('https://image.tmdb.org/t/p/w300${item.poster_path}')"></div>
                     <div class="rec-info">${item.name || item.title}</div>
@@ -321,15 +339,17 @@
             setTimeout(() => {
                 isPlaying = true;
                 playIcon.style.opacity = '0';
+                playIcon.style.pointerEvents = 'none';
                 smallPlay.className = 'fas fa-pause';
                 timerInterval = setInterval(() => {
                     if (currentTime < totalSeconds) { currentTime++; updateTimerDisplay(); }
                     else { resetTimer(); }
                 }, 1000);
-            }, 1000);
+            }, 800);
         } else {
             isPlaying = false;
             playIcon.style.opacity = '1';
+            playIcon.style.pointerEvents = 'auto';
             playSymbol.className = "fas fa-play";
             smallPlay.className = 'fas fa-play';
             clearInterval(timerInterval);
@@ -341,6 +361,7 @@
         isPlaying = false;
         currentTime = 0;
         document.getElementById('playIcon').style.opacity = '1';
+        document.getElementById('playIcon').style.pointerEvents = 'auto';
         document.getElementById('playSymbol').className = "fas fa-play";
         document.getElementById('smallPlayBtn').className = 'fas fa-play';
         updateTimerDisplay();
@@ -352,10 +373,11 @@
         drop.innerHTML = seriesData.seasons.filter(s => s.season_number > 0).map(s => `
             <div class="dropdown-item" onclick="selectSeason(${s.season_number})">Season ${s.season_number}</div>
         `).join('');
-        document.getElementById('sLabel').innerText = `Season ${sUrl}`;
+        document.getElementById('sLabel').innerText = `Season ${currentS}`;
     }
 
     function selectSeason(n) {
+        currentS = n;
         document.getElementById('sLabel').innerText = `Season ${n}`;
         toggleDrop('seasonDrop');
         loadEpisodes(n, 1);
@@ -367,21 +389,41 @@
             const res = await fetch(`https://api.themoviedb.org/3/tv/${id}/season/${sNum}?api_key=${API_KEY}`);
             const data = await res.json();
             
-            totalSeconds = (data.episodes[0].runtime || 45) * 60;
+            // Set default episode logic
+            const targetEp = data.episodes.find(ep => ep.episode_number == eNum) || data.episodes[0];
+            totalSeconds = (targetEp.runtime || 45) * 60;
+            
+            // Auto Update Backdrop for current episode
+            updateBackdrop(targetEp.still_path || seriesData.backdrop_path);
+            
             resetTimer();
 
             drop.innerHTML = data.episodes.map(ep => `
-                <div class="dropdown-item" onclick="selectEpisode(${sNum}, ${ep.episode_number})">E${ep.episode_number}: ${ep.name}</div>
+                <div class="dropdown-item" onclick="selectEpisode(${sNum}, ${ep.episode_number}, '${ep.still_path}')">E${ep.episode_number}: ${ep.name}</div>
             `).join('');
-            document.getElementById('eLabel').innerText = `Episode ${eNum}`;
-        } catch (e) { console.error("Ep Error"); }
+            document.getElementById('eLabel').innerText = `Episode ${targetEp.episode_number}`;
+        } catch (e) { console.error("Ep Error", e); }
     }
 
-    function selectEpisode(s, e) {
+    function selectEpisode(s, e, stillPath) {
+        currentE = e;
         document.getElementById('eLabel').innerText = `Episode ${e}`;
         toggleDrop('epDrop');
+        
+        // Reload backdrop based on episode still_path
+        if (stillPath && stillPath !== 'null') {
+            updateBackdrop(stillPath);
+        } else {
+            updateBackdrop(seriesData.backdrop_path);
+        }
+
         history.replaceState(null, "", `/tv/${id}/${s}/${e}`);
         resetTimer();
+        
+        // Auto Play Feel: Start loading icon when episode changed
+        const playSymbol = document.getElementById('playSymbol');
+        playSymbol.className = "fas fa-spinner";
+        setTimeout(() => { playSymbol.className = "fas fa-play"; }, 600);
     }
 
     function toggleDrop(dropId) {
