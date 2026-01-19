@@ -181,7 +181,7 @@
 
 <header>
     <div class="header-inner">
-        <a href="index.html" class="logo"><i class="fas fa-play-circle" style="color:var(--accent-color);"></i><span>Just<span>Watch</span></a>
+        <a href="/" class="logo"><i class="fas fa-play-circle" style="color:var(--accent-color);"></i><span>Just<span>Watch</span></a>
         <div class="user-profile" onclick="toggleAuth()">
             <i class="fas fa-user-circle"></i>
         </div>
@@ -207,7 +207,6 @@
             <button class="btn btn-alt" onclick="toggleAuth()"><i class="fas fa-plus"></i> Add to Watchlist</button>
         </div>
 
-        <!-- BANNER 320x50 CENTERED -->
         <div class="action-banner-slot"></div>
 
         <div class="synopsis">
@@ -230,7 +229,6 @@
     </div>
 </footer>
 
-<!-- JUSTWATCH STYLE POPUP ($0) -->
 <div id="auth-overlay" onclick="closeAuth(event)">
     <div class="jw-modal" onclick="event.stopPropagation()">
         <div class="modal-header">
@@ -267,12 +265,31 @@
 
     async function init() {
         const params = new URLSearchParams(window.location.search);
-        const id = params.get('id');
-        const type = params.get('type') || 'movie';
-        const s = params.get('s');
-        const e = params.get('e');
+        const pathParts = window.location.pathname.split('/');
         
-        if (id) await loadMainData(id, type, s, e);
+        let id = params.get('id');
+        let type = params.get('type');
+        let s = params.get('s');
+        let e = params.get('e');
+
+        // Logic Baru untuk membaca URL Path (/tv/id/s/e)
+        if (!id) {
+            if (pathParts.includes('tv')) {
+                type = 'tv';
+                id = pathParts[pathParts.indexOf('tv') + 1];
+                s = pathParts[pathParts.indexOf('tv') + 2];
+                e = pathParts[pathParts.indexOf('tv') + 3];
+            } else if (pathParts.includes('movie')) {
+                type = 'movie';
+                id = pathParts[pathParts.indexOf('movie') + 1];
+            }
+        }
+
+        if (id) {
+            await loadMainData(id, type || 'movie', s, e);
+        } else {
+            document.getElementById('main-title').innerText = "Content Not Found";
+        }
     }
 
     async function loadMainData(id, type, s, e) {
@@ -343,13 +360,7 @@
             btn.className = `season-btn ${s.season_number === activeS ? 'active' : ''}`;
             btn.innerText = `Season ${s.season_number}`;
             btn.onclick = () => {
-                const url = new URL(window.location);
-                url.searchParams.set('s', s.season_number);
-                url.searchParams.set('e', 1);
-                window.history.pushState({}, '', url);
-                document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                loadEpisodes(tvId, s.season_number, 1);
+                selectEpisode(tvId, s.season_number, 1);
             };
             container.appendChild(btn);
         });
@@ -381,15 +392,11 @@
     }
 
     function selectEpisode(id, s, e) {
-    // Mengambil judul film untuk dijadikan bagian dari link (slug)
-    const title = document.getElementById('main-title').innerText
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-') // Mengubah spasi/simbol jadi tanda minus
-        .replace(/(^-|-$)/g, '');    // Menghapus tanda minus di awal/akhir
-
-    // Mengarahkan ke format: /tv/79744/8/2/nama-judul
-    window.location.href = `/tv/${id}/${s}/${e}/${title}`;
-}
+        const mainTitle = seriesData.name || seriesData.title || 'watch';
+        const slug = mainTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        // Mengarahkan ke URL rapi
+        window.location.href = `/tv/${id}/${s}/${e}/${slug}`;
+    }
 
     function toggleAuth() {
         const overlay = document.getElementById('auth-overlay');
@@ -412,7 +419,7 @@
 
     init();
 </script>
-<!-- Histats.com  START  (aync)-->
+
 <script type="text/javascript">var _Hasync= _Hasync|| [];
 _Hasync.push(['Histats.start', '1,4992391,4,0,0,0,00010000']);
 _Hasync.push(['Histats.fasi', '1']);
@@ -422,8 +429,6 @@ var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async
 hs.src = ('//s10.histats.com/js15_as.js');
 (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
 })();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4992391&101" alt="counter statistics" border="0"></a></noscript>
-<!-- Histats.com  END  -->
- </script>
+<noscript><a href="/" target="_blank"><img src="//sstatic1.histats.com/0.gif?4992391&101" alt="counter statistics" border="0"></a></noscript>
 </body>
 </html>
