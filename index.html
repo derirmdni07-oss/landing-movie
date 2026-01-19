@@ -51,6 +51,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
+        /* Modern Logo with Play Icon */
         .logo {
             text-decoration: none;
             font-size: 1.4rem;
@@ -58,8 +59,27 @@
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             letter-spacing: -1px;
+        }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(251, 192, 45, 0.3);
+            transition: 0.3s;
+        }
+        .logo-icon i {
+            color: #000;
+            font-size: 0.9rem;
+            margin-left: 2px; /* Visual center for triangle */
+        }
+        .logo:hover .logo-icon {
+            transform: scale(1.1) rotate(-5deg);
         }
         .logo span { color: var(--accent); }
 
@@ -98,6 +118,20 @@
             transform: translateY(-50%);
             color: var(--text-dim);
             font-size: 0.9rem;
+        }
+
+        /* --- SEARCH RESULTS OVERLAY --- */
+        #search-results-section {
+            display: none;
+            padding: 80px 4% 40px;
+            min-height: 100vh;
+            background: var(--bg);
+        }
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
         /* --- HERO BANNER --- */
@@ -264,11 +298,20 @@
         .mobile-nav { display: none; }
 
         @media (max-width: 768px) {
-            .search-container { display: none; } /* Use mobile nav search instead */
+            .search-container { 
+                max-width: 160px;
+                margin-left: 5px;
+            } 
+            .logo { font-size: 1.1rem; }
+            .logo-icon { width: 26px; height: 26px; }
             header.top-nav { height: 56px; }
             .hero { height: 55vh; padding-bottom: 40px; margin-top: 56px;}
             .hero-content h1 { font-size: 1.8rem; }
             .card { width: 120px; }
+            .search-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+                gap: 15px;
+            }
             .nav-btn { display: none; }
             
             .mobile-nav {
@@ -301,61 +344,79 @@
 <body>
 
     <header class="top-nav">
-        <a href="index.html" class="logo">just<span>watch</span></a>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-play"></i>
+            </div>
+            just<span>watch</span>
+        </a>
         <div class="search-container">
-            <form action="search.html" method="GET" class="search-form">
+            <div class="search-form">
                 <i class="fas fa-search"></i>
-                <input type="text" name="q" placeholder="Search for movies, TV shows..." required>
-            </form>
+                <input type="text" id="main-search-input" placeholder="Search movies, TV shows..." autocomplete="off">
+            </div>
         </div>
     </header>
 
-    <main>
-        <div id="hero" class="hero" onclick="goToFeatured()">
-            <div class="hero-content">
-                <p style="color: var(--accent); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">Today's Top Pick</p>
-                <h1 id="hero-title">Discover your next story...</h1>
-                <a href="#" class="btn-play"><i class="fas fa-play"></i> Watch Now</a>
-            </div>
+    <!-- Instant Search Results Section -->
+    <section id="search-results-section">
+        <div class="row-header">
+            <h2 class="row-title" id="search-query-title">Search Results</h2>
         </div>
-
-        <div class="shelf">
-            <!-- Popular Movies -->
-            <div class="row">
-                <div class="row-header">
-                    <h2 class="row-title">Popular Movies</h2>
-                </div>
-                <button class="nav-btn prev-btn" onclick="scrollRow('movie-scroll', -400)"><i class="fas fa-chevron-left"></i></button>
-                <div id="movie-scroll" class="scroll-container"></div>
-                <button class="nav-btn next-btn" onclick="scrollRow('movie-scroll', 400)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-
-            <!-- TV Shows -->
-            <div class="row">
-                <div class="row-header">
-                    <h2 class="row-title">Trending TV Shows</h2>
-                </div>
-                <button class="nav-btn prev-btn" onclick="scrollRow('tv-scroll', -400)"><i class="fas fa-chevron-left"></i></button>
-                <div id="tv-scroll" class="scroll-container"></div>
-                <button class="nav-btn next-btn" onclick="scrollRow('tv-scroll', 400)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-
-            <!-- Top Rated -->
-            <div class="row">
-                <div class="row-header">
-                    <h2 class="row-title">Top Rated</h2>
-                </div>
-                <button class="nav-btn prev-btn" onclick="scrollRow('top-scroll', -400)"><i class="fas fa-chevron-left"></i></button>
-                <div id="top-scroll" class="scroll-container"></div>
-                <button class="nav-btn next-btn" onclick="scrollRow('top-scroll', 400)"><i class="fas fa-chevron-right"></i></button>
-            </div>
+        <div class="search-grid" id="search-grid">
+            <!-- Results injected here -->
         </div>
-    </main>
+    </section>
+
+    <!-- Default Content Section -->
+    <div id="default-content">
+        <main>
+            <div id="hero" class="hero" onclick="goToFeatured()">
+                <div class="hero-content">
+                    <p style="color: var(--accent); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">Today's Top Pick</p>
+                    <h1 id="hero-title">Discover your next story...</h1>
+                    <a href="#" class="btn-play"><i class="fas fa-play"></i> Watch Now</a>
+                </div>
+            </div>
+
+            <div class="shelf">
+                <!-- Popular Movies -->
+                <div class="row">
+                    <div class="row-header">
+                        <h2 class="row-title">Popular Movies</h2>
+                    </div>
+                    <button class="nav-btn prev-btn" onclick="scrollRow('movie-scroll', -400)"><i class="fas fa-chevron-left"></i></button>
+                    <div id="movie-scroll" class="scroll-container"></div>
+                    <button class="nav-btn next-btn" onclick="scrollRow('movie-scroll', 400)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <!-- TV Shows -->
+                <div class="row">
+                    <div class="row-header">
+                        <h2 class="row-title">Trending TV Shows</h2>
+                    </div>
+                    <button class="nav-btn prev-btn" onclick="scrollRow('tv-scroll', -400)"><i class="fas fa-chevron-left"></i></button>
+                    <div id="tv-scroll" class="scroll-container"></div>
+                    <button class="nav-btn next-btn" onclick="scrollRow('tv-scroll', 400)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+
+                <!-- Top Rated -->
+                <div class="row">
+                    <div class="row-header">
+                        <h2 class="row-title">Top Rated</h2>
+                    </div>
+                    <button class="nav-btn prev-btn" onclick="scrollRow('top-scroll', -400)"><i class="fas fa-chevron-left"></i></button>
+                    <div id="top-scroll" class="scroll-container"></div>
+                    <button class="nav-btn next-btn" onclick="scrollRow('top-scroll', 400)"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <nav class="mobile-nav">
         <a href="index.html" class="nav-item active"><i class="fas fa-home"></i><span>Home</span></a>
         <a href="#" class="nav-item"><i class="fas fa-fire"></i><span>Popular</span></a>
-        <a href="search.html" class="nav-item"><i class="fas fa-search"></i><span>Search</span></a>
+        <a href="#" class="nav-item" id="mobile-search-btn"><i class="fas fa-search"></i><span>Search</span></a>
         <a href="#" class="nav-item"><i class="fas fa-bookmark"></i><span>Watchlist</span></a>
     </nav>
 
@@ -368,9 +429,32 @@
         };
 
         let featuredItem = null;
+        const searchInput = document.getElementById('main-search-input');
+        const defaultContent = document.getElementById('default-content');
+        const searchResultsSection = document.getElementById('search-results-section');
+        const searchGrid = document.getElementById('search-grid');
+        const searchQueryTitle = document.getElementById('search-query-title');
 
         function scrollRow(id, amount) {
             document.getElementById(id).scrollBy({ left: amount, behavior: 'smooth' });
+        }
+
+        // Generate Card HTML
+        function createCardHTML(item, type) {
+            const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
+            const year = (item.release_date || item.first_air_date || '').split('-')[0] || '-';
+            const poster = item.poster_path ? `${API.IMG}${item.poster_path}` : 'https://via.placeholder.com/342x513?text=No+Image';
+
+            return `
+                <a href="detail.html?id=${item.id}&type=${type || item.media_type}" class="card" style="width: auto;">
+                    <div class="poster-box">
+                        <div class="rating-badge"><i class="fas fa-star"></i> ${rating}</div>
+                        <img src="${poster}" alt="${item.title || item.name}" loading="lazy">
+                    </div>
+                    <div class="card-title">${item.title || item.name}</div>
+                    <div class="card-sub">${year} • ${type === 'movie' || item.media_type === 'movie' ? 'Movie' : 'TV'}</div>
+                </a>
+            `;
         }
 
         async function fetchRow(path, containerId, type) {
@@ -381,27 +465,56 @@
                 
                 data.results.forEach(item => {
                     if(!item.poster_path) return;
-                    
-                    const card = document.createElement('a');
-                    card.className = 'card';
-                    // Link to details page
-                    card.href = `detail.html?id=${item.id}&type=${type}`;
-                    
-                    const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
-                    const year = (item.release_date || item.first_air_date || '').split('-')[0] || '-';
-
-                    card.innerHTML = `
-                        <div class="poster-box">
-                            <div class="rating-badge"><i class="fas fa-star"></i> ${rating}</div>
-                            <img src="${API.IMG}${item.poster_path}" alt="${item.title || item.name}" loading="lazy">
-                        </div>
-                        <div class="card-title">${item.title || item.name}</div>
-                        <div class="card-sub">${year} • ${type === 'movie' ? 'Movie' : 'TV'}</div>
-                    `;
-                    container.appendChild(card);
+                    const cardWrapper = document.createElement('div');
+                    cardWrapper.innerHTML = createCardHTML(item, type);
+                    container.appendChild(cardWrapper.firstElementChild);
                 });
             } catch (err) { console.error(err); }
         }
+
+        // Live Search Logic
+        let searchTimeout;
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            clearTimeout(searchTimeout);
+
+            if (query.length === 0) {
+                defaultContent.style.display = 'block';
+                searchResultsSection.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(async () => {
+                defaultContent.style.display = 'none';
+                searchResultsSection.style.display = 'block';
+                searchQueryTitle.innerText = `Searching for: "${query}"`;
+                
+                try {
+                    const res = await fetch(`${API.BASE}/search/multi?api_key=${API.KEY}&query=${encodeURIComponent(query)}`);
+                    const data = await res.json();
+                    
+                    searchGrid.innerHTML = '';
+                    const validResults = data.results.filter(i => i.media_type !== 'person');
+                    
+                    if (validResults.length > 0) {
+                        validResults.forEach(item => {
+                            searchGrid.innerHTML += createCardHTML(item);
+                        });
+                    } else {
+                        searchGrid.innerHTML = `<p style="color: var(--text-dim); padding: 20px;">No results found for "${query}"</p>`;
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            }, 300);
+        });
+
+        // Mobile Search Trigger
+        document.getElementById('mobile-search-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            searchInput.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         async function init() {
             try {
