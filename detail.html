@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> JustWatch-TV</title>
+    <title>JustWatch - Premium Streaming</title>
     
-    <!-- Favicon Bulat Sempurna -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23fbc02d'/><path d='M40 35L70 50L40 65Z' fill='black'/></svg>">
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,12 +23,7 @@
             --safe-area: 20px;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body { 
             background-color: var(--bg-color); 
@@ -39,13 +33,13 @@
             overflow-x: hidden;
         }
 
-        /* --- MODERN HEADER --- */
+        /* --- HEADER --- */
         header {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 64px;
+            top: 0; left: 0; width: 100%; height: 70px;
             display: flex; align-items: center;
             z-index: 1000;
-            background: rgba(6, 9, 15, 0.85);
+            background: linear-gradient(to bottom, rgba(6, 9, 15, 0.95), rgba(6, 9, 15, 0.8));
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
         }
@@ -56,192 +50,169 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        /* --- LOGO TERSTRUKTUR (Anti Gepeng) --- */
         .logo {
-            display: flex; align-items: center; gap: 8px;
-            text-decoration: none; color: var(--text-primary);
-            font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px;
-            flex-shrink: 0;
+            text-decoration: none; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px;
+            color: var(--text-primary); display: flex; align-items: center; gap: 8px;
         }
-        .logo-circle {
-            width: 32px; height: 32px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; /* Mencegah logo lonjong/gepeng */
-            box-shadow: 0 4px 10px rgba(251, 192, 45, 0.2);
-        }
-        .logo-circle i {
-            color: #000;
-            font-size: 0.8rem;
-            margin-left: 2px;
-        }
-        .logo span { display: flex; align-items: center; }
-        .logo b { color: var(--accent-color); font-weight: 800; }
+        .logo i { color: var(--accent-color); font-size: 1.4rem; }
+        .logo span { color: var(--accent-color); }
 
-        .search-bar {
-            flex: 1; max-width: 300px; margin: 0 15px;
-            position: relative; display: flex; align-items: center;
+        .user-profile {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); cursor: pointer; transition: 0.3s;
         }
-        .search-bar input {
-            width: 100%; background: var(--glass);
-            border: 1px solid var(--glass-border);
-            padding: 8px 12px 8px 35px; border-radius: 10px;
-            color: white; font-size: 0.85rem; outline: none;
-        }
-        .search-bar i {
-            position: absolute; left: 12px; color: var(--text-secondary);
-            font-size: 0.8rem;
-        }
+        .user-profile:hover { border-color: var(--accent-color); color: var(--accent-color); background: rgba(251, 192, 45, 0.05); }
 
         /* --- HERO BACKDROP --- */
-        .hero-banner {
-            position: absolute; top: 0; left: 0; width: 100%; height: 60vh;
-            z-index: -1; overflow: hidden;
-        }
-        .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-banner { position: absolute; top: 0; left: 0; width: 100%; height: 80vh; z-index: -1; overflow: hidden; }
+        .hero-banner img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.5s ease; }
         .hero-banner::after {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, var(--bg-color) 0%, rgba(6, 9, 15, 0.4) 60%, rgba(6, 9, 15, 0.8) 100%);
+            background: linear-gradient(to top, var(--bg-color) 0%, var(--bg-color) 10%, rgba(6, 9, 15, 0.2) 50%, rgba(6, 9, 15, 0.7) 100%);
         }
 
-        /* --- MAIN CONTENT (Tanpa Poster Samping) --- */
-        .container { 
-            max-width: 800px; margin: 0 auto; 
-            padding: 120px var(--safe-area) 60px; 
-        }
+        /* --- CONTENT --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 140px var(--safe-area) 80px; }
 
-        .info-content {
-            text-align: left;
+        .label {
+            display: inline-block; color: var(--accent-color); font-size: 0.75rem;
+            text-transform: uppercase; font-weight: 800; letter-spacing: 2px; margin-bottom: 15px;
         }
+        
+        #main-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; line-height: 0.95; margin-bottom: 20px; letter-spacing: -2px; }
 
-        .info-content h1 {
-            font-size: clamp(2.2rem, 8vw, 3.8rem);
-            font-weight: 800; line-height: 1; margin-bottom: 15px;
-            letter-spacing: -1.5px;
-        }
-
-        .selection-indicator {
-            display: none; align-items: center; gap: 8px;
-            background: rgba(251, 192, 45, 0.12);
-            border-left: 3px solid var(--accent-color);
-            padding: 8px 15px; border-radius: 4px 12px 12px 4px;
-            margin-bottom: 25px; width: fit-content;
-        }
-
-        .meta-tags {
-            display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-            margin-bottom: 30px;
-        }
-        .badge {
-            padding: 5px 12px; border-radius: 6px; font-size: 0.7rem;
-            font-weight: 700; text-transform: uppercase;
-            background: var(--glass); border: 1px solid var(--glass-border);
-        }
+        .meta-tags { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 35px; }
+        .badge { padding: 6px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; background: var(--glass); border: 1px solid var(--glass-border); }
         .badge-rating { background: var(--accent-color); color: #000; border: none; }
 
-        .action-group {
-            display: flex; flex-direction: column; gap: 12px; margin-bottom: 45px;
-        }
+        .action-group { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
         .btn {
-            height: 56px; padding: 0 25px; border-radius: 14px;
-            font-weight: 700; font-size: 1rem; cursor: pointer;
-            border: none; display: flex; align-items: center; justify-content: center; gap: 12px;
-            transition: 0.2s;
+            height: 60px; padding: 0 30px; border-radius: 16px; font-weight: 800; font-size: 1.05rem; cursor: pointer;
+            border: none; display: flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s;
         }
-        .btn-main { background: var(--accent-color); color: #000; width: 100%; }
-        .btn-alt { background: var(--glass); color: #fff; border: 1px solid var(--glass-border); width: 100%; }
+        .btn-main { background: var(--accent-color); color: #000; box-shadow: 0 10px 30px rgba(251, 192, 45, 0.3); }
+        .btn-alt { background: var(--glass); color: #fff; border: 1px solid var(--glass-border); }
 
-        .synopsis { margin-bottom: 45px; }
-        .label {
-            display: block; color: var(--accent-color); font-size: 0.7rem;
-            text-transform: uppercase; font-weight: 800; letter-spacing: 2px;
-            margin-bottom: 12px;
+        .action-banner-slot {
+            width: 320px;
+            height: 50px;
+            margin: 0 0 50px 0;
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed var(--glass-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        .synopsis p { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; }
+        .action-banner-slot::before {
+            content: "AD BANNER 320x50";
+            font-size: 10px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
 
-        /* --- TV SHOWS SECTION --- */
-        .season-scroller {
-            display: flex; gap: 8px; overflow-x: auto; padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-        .season-scroller::-webkit-scrollbar { display: none; }
-        
+        /* --- TV SECTION --- */
+        #tv-section { margin-top: 60px; }
+        .season-scroller { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
         .season-btn {
-            padding: 10px 18px; border-radius: 10px; background: var(--glass);
+            padding: 12px 24px; border-radius: 12px; background: var(--glass);
             border: 1px solid var(--glass-border); color: var(--text-secondary);
-            font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap;
+            font-weight: 700; font-size: 0.85rem; cursor: pointer; white-space: nowrap;
+            transition: 0.3s;
         }
         .season-btn.active { background: var(--accent-color); color: #000; border: none; }
 
-        .episode-container {
-            background: var(--card-bg); border-radius: 16px;
-            border: 1px solid var(--glass-border); overflow: hidden;
-        }
         .ep-item {
-            display: flex; align-items: center; padding: 16px 20px;
-            cursor: pointer; border-bottom: 1px solid var(--glass-border);
+            display: flex; gap: 20px; padding: 15px; background: var(--card-bg); border-radius: 20px;
+            border: 1px solid var(--glass-border); cursor: pointer; margin-bottom: 15px;
+            transition: 0.3s;
         }
-        .ep-num { width: 30px; font-weight: 800; color: var(--accent-color); font-size: 0.85rem; }
-        .ep-name { flex: 1; font-weight: 600; font-size: 0.9rem; }
+        .ep-item:hover { border-color: var(--accent-color); background: rgba(255,255,255,0.05); }
+        .ep-item.active { border-color: var(--accent-color); background: rgba(251, 192, 45, 0.05); }
+        
+        .ep-thumb { width: 180px; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; flex-shrink: 0; position: relative; }
+        .ep-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .ep-thumb .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+        .ep-item:hover .play-overlay { opacity: 1; }
+        .play-overlay i { color: #fff; font-size: 1.5rem; }
 
-        /* --- FOOTER & COPYRIGHT --- */
-        footer {
-            margin-top: 60px;
-            padding: 40px var(--safe-area);
-            border-top: 1px solid var(--glass-border);
-            text-align: center;
-        }
-        .footer-logo {
-            display: inline-flex; align-items: center; gap: 8px;
-            margin-bottom: 15px; opacity: 0.8;
-            text-decoration: none; color: white; font-weight: 700;
-        }
-        .copyright-text {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
-            line-height: 1.6;
-        }
-
-        /* --- PLAYER MODAL --- */
-        #player-modal {
-            position: fixed; inset: 0; background: #000; z-index: 2000;
-            display: none; align-items: center; justify-content: center;
-        }
-        .player-content { text-align: center; max-width: 400px; width: 85%; }
-        .close-btn { 
-            position: absolute; top: 25px; right: 25px; font-size: 2rem; color: #fff; cursor: pointer; 
-            width: 44px; height: 44px; background: rgba(255,255,255,0.1); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .spinner { 
-            width: 60px; height: 60px; margin: 0 auto 20px;
-            border: 4px solid rgba(251,192,45,0.1); border-top-color: var(--accent-color); 
-            border-radius: 50%; animation: spin 1s linear infinite; 
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* DESKTOP ADJUSTMENT */
-        @media (min-width: 850px) {
-            .action-group { flex-direction: row; }
-            .hero-banner { height: 70vh; }
-        }
-
+        /* --- PREMIUM TRUST POPUP --- */
         #auth-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 3000;
+            position: fixed; inset: 0; background: rgba(2, 4, 8, 0.98); z-index: 5000;
             display: none; align-items: center; justify-content: center; padding: 20px;
         }
-        .auth-card {
-            background: var(--card-bg); width: 100%; max-width: 360px; 
-            padding: 40px 25px; border-radius: 24px; text-align: center;
-            border: 1px solid var(--glass-border);
+        .trust-modal {
+            background: #161b22; width: 100%; max-width: 480px; padding: 45px 35px;
+            border-radius: 28px; text-align: center; border: 1px solid #30363d;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.8); position: relative;
         }
-        .auth-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            width: 100%; padding: 14px; border-radius: 12px; margin-top: 12px;
-            text-decoration: none; font-weight: 700; font-size: 0.85rem;
+        .trust-lock {
+            width: 80px; height: 80px; background: linear-gradient(135deg, #fbc02d, #f9a825);
+            border-radius: 50%; margin: -85px auto 25px; display: flex; align-items: center;
+            justify-content: center; color: #000; font-size: 2rem;
+            box-shadow: 0 0 30px rgba(251, 192, 45, 0.5);
+        }
+        .trust-modal h2 { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .trust-modal p { color: #8b949e; font-size: 1rem; line-height: 1.6; margin-bottom: 30px; }
+        
+        .security-badges {
+            display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; opacity: 0.7;
+        }
+        .badge-item { font-size: 0.65rem; font-weight: 700; color: #58a6ff; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .badge-item i { font-size: 1.2rem; }
+
+        .btn-premium {
+            width: 100%; height: 65px; background: #fff; color: #000;
+            border-radius: 16px; font-weight: 900; font-size: 1.1rem; text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .btn-premium:hover { transform: scale(1.02); background: var(--accent-color); }
+
+        .live-status {
+            margin-top: 20px; font-size: 0.75rem; color: #3fb950; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 600;
+        }
+        .dot { width: 8px; height: 8px; background: #3fb950; border-radius: 50%; animation: blink 1s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        /* --- NATIVE AD SLOT --- */
+        .native-ad-slot {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 var(--safe-area);
+            text-align: center;
+        }
+        .native-ad-wrapper {
+            width: 100%;
+            min-height: 250px;
+            background: #0d1117;
+            border: 2px dashed #30363d;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .native-ad-wrapper::before {
+            content: "NATIVE AD SLOT - PASTE YOUR AD CODE HERE";
+            color: #484f58;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        /* --- FOOTER --- */
+        footer { padding: 80px var(--safe-area) 50px; border-top: 1px solid var(--glass-border); text-align: center; margin-top: 60px; }
+        .footer-logo { justify-content: center; margin-bottom: 20px; }
+        .copyright { color: var(--text-secondary); font-size: 0.85rem; max-width: 700px; margin: 0 auto; line-height: 1.7; }
+        .trust-verified { display: flex; justify-content: center; gap: 15px; margin-top: 20px; opacity: 0.4; filter: grayscale(1); }
+
+        @media (max-width: 768px) {
+            .ep-thumb { width: 140px; }
         }
     </style>
 </head>
@@ -249,111 +220,80 @@
 
 <header>
     <div class="header-inner">
-        <a href="index.html" class="logo">
-            <div class="logo-circle">
-                <i class="fas fa-play"></i>
-            </div>
-            <span>Just<b>Watch-TV</b></span>
-        </a>
-        
-        <div class="search-bar">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="Cari judul..." onkeypress="if(event.key==='Enter') doSearch()">
-        </div>
-
-        <div onclick="toggleAuth()">
-            <i class="fas fa-user-circle" style="font-size: 1.4rem; color: var(--text-secondary);"></i>
+        <a href="index.html" class="logo"><i class="fas fa-play-circle"></i>Just<span>Watch</span></a>
+        <div class="user-profile" onclick="toggleAuth()">
+            <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
         </div>
     </div>
 </header>
 
-<div class="hero-banner">
-    <img id="bg-image" src="" alt="Backdrop">
-</div>
+<div class="hero-banner"><img id="bg-image" src="" alt="Backdrop"></div>
 
 <div class="container">
-    <div class="info-content">
-        <span class="label">Pilihan Populer</span>
-        <h1 id="main-title">Memuat...</h1>
-        
-        <div id="selection-box" class="selection-indicator">
-            <i class="fas fa-tv"></i>
-            <span id="selected-info" style="font-weight:800; font-size:0.8rem; color:white;"></span>
-        </div>
+    <div class="content-header">
+        <span class="label" id="v-status">Now Trending</span>
+        <h1 id="main-title">Loading...</h1>
         
         <div class="meta-tags">
             <div class="badge badge-rating" id="v-rating">0.0</div>
             <div class="badge" id="v-year">----</div>
             <div class="badge" id="v-runtime">-- min</div>
-            <div class="badge" style="color:var(--accent-color); border-color:var(--accent-color);">Ultra HD</div>
+            <div class="badge" style="color:var(--accent-color); border-color:var(--accent-color);">ULTRA HD 4K</div>
         </div>
 
         <div class="action-group">
-            <button class="btn btn-main" onclick="startPlayer()">
-                <i class="fas fa-play"></i> Putar Sekarang
-            </button>
-            <button class="btn btn-alt" onclick="this.innerHTML='<i class=\'fas fa-check\'></i> Favorit'">
-                <i class="fas fa-plus"></i> Simpan List
-            </button>
+            <button class="btn btn-main" onclick="toggleAuth()"><i class="fas fa-play"></i> Watch Now</button>
+            <button class="btn btn-alt" onclick="toggleAuth()"><i class="fas fa-plus"></i> Add to Watchlist</button>
         </div>
 
+        <div class="action-banner-slot"></div>
+
         <div class="synopsis">
-            <span class="label">Tentang Judul Ini</span>
+            <span class="label">Overview</span>
             <p id="v-overview">...</p>
         </div>
 
         <div id="tv-section" style="display: none;">
-            <span class="label">Musim & Episode</span>
+            <div style="margin: 40px 0 20px;"><span class="label">Episodes & Seasons</span></div>
             <div id="season-tabs" class="season-scroller"></div>
-            <div id="episode-list" class="episode-container"></div>
+            <div id="episode-list" style="margin-top: 20px;"></div>
         </div>
     </div>
+</div>
+
+<div class="native-ad-slot">
+    <div class="native-ad-wrapper"></div>
 </div>
 
 <footer>
-    <a href="#" class="footer-logo">
-        <div class="logo-circle" style="width:24px; height:24px;">
-            <i class="fas fa-play" style="font-size:0.6rem;"></i>
+    <a href="#" class="logo footer-logo"><i class="fas fa-play-circle"></i>Just<span>Watch</span></a>
+    <div class="copyright">
+        <p>Copyright &copy; 2026 JustWatch Interactive. This platform is an official DMCA-compliant streaming aggregator.</p>
+        <p style="margin-top: 5px;">Licensed for distribution in the United States and European Economic Area. Verified secure and malware-free by Global Security Standards.</p>
+        <div class="trust-verified">
+            <i class="fab fa-cc-visa fa-2x"></i>
+            <i class="fab fa-cc-mastercard fa-2x"></i>
+            <i class="fas fa-shield-alt fa-2x"></i>
+            <i class="fas fa-lock fa-2x"></i>
         </div>
-        Just<b>Watch-TV</b>
-    </a>
-    <div class="copyright-text">
-        &copy; 2026 JustWatch-TV Entertainment Inc. <br>
-        Seluruh hak cipta dilindungi undang-undang. Platform ini hanya untuk tujuan demonstrasi streaming berkualitas tinggi.
     </div>
 </footer>
 
-<!-- Player Modal -->
-<div id="player-modal">
-    <div class="close-btn" onclick="stopPlayer()">&times;</div>
-    <div class="player-content">
-        <div class="spinner"></div>
-        <p style="color:var(--accent-color); font-weight:800; letter-spacing:1px; font-size:0.75rem; text-transform:uppercase;">
-            Menyiapkan Enkripsi Server...
-        </p>
-        <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:10px;">Mengoptimalkan jalur streaming 4K</p>
-    </div>
-</div>
-
-<!-- Auth UI -->
-<div id="auth-overlay" onclick="if(event.target===this) toggleAuth()">
-    <div class="auth-card">
-        <div class="logo" style="justify-content: center; margin-bottom: 25px;">
-            <div class="logo-circle">
-                <i class="fas fa-play"></i>
-            </div>
-             <b>Just<b>Watch-TV</b>
+<div id="auth-overlay">
+    <div class="trust-modal">
+        <div class="trust-lock"><i class="fas fa-shield-check"></i></div>
+        <h2>Secure Verification</h2>
+        <p>This content is reserved for <b>Verified Premium Members</b>. Please complete a quick security check to unlock full 4K streaming access.</p>
+        <div class="security-badges">
+            <div class="badge-item"><i class="fas fa-lock"></i><span>SSL SECURE</span></div>
+            <div class="badge-item"><i class="fas fa-check-double"></i><span>VERIFIED</span></div>
+            <div class="badge-item"><i class="fas fa-user-shield"></i><span>PROTECTED</span></div>
         </div>
-        <h3 style="margin-bottom: 10px;">Login Diperlukan</h3>
-        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 30px;">Streaming Ultra HD memerlukan verifikasi akun gratis.</p>
-        
-        <a href="https://OFFER_LINK_ANDA" class="auth-btn" style="background: #fff; color: #000;">
-            <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png" width="16"> Google Account
-        </a>
-        <a href="https://OFFER_LINK_ANDA" class="auth-btn" style="background: #1877f2; color: #fff;">
-            <i class="fab fa-facebook"></i> Facebook Login
-        </a>
-        <button onclick="toggleAuth()" style="background:none; border:none; color:var(--text-secondary); margin-top:25px; cursor:pointer; font-weight:600; font-size:0.8rem;">Lewati untuk sekarang</button>
+        <div class="cta-container">
+            <a href="YOUR_CPA_LINK" class="btn-premium">VERIFY & UNLOCK ACCESS</a>
+        </div>
+        <div class="live-status"><div class="dot"></div> 1,402 users are currently streaming this title</div>
+        <button onclick="toggleAuth()" style="background:none; border:none; color:#4b5563; margin-top:25px; cursor:pointer; font-size:0.75rem; text-decoration: underline;">I will watch in Low Quality (not recommended)</button>
     </div>
 </div>
 
@@ -362,117 +302,149 @@
         KEY: '22be462e6d3de1dbab03d1ca50847b5a',
         BASE: 'https://api.themoviedb.org/3',
         IMG: 'https://image.tmdb.org/t/p/w500',
-        HD: 'https://image.tmdb.org/t/p/original'
+        IMG_ORIG: 'https://image.tmdb.org/t/p/original'
     };
 
-    let timer;
+    let seriesData = null;
 
-    async function initialize() {
+    async function init() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
         const type = params.get('type') || 'movie';
         const s = params.get('s');
         const e = params.get('e');
         
-        if (id) await getMediaData(id, type, s, e);
+        if (id) await loadMainData(id, type, s, e);
     }
 
-    async function getMediaData(id, type, s, e) {
+    async function loadMainData(id, type, s, e) {
         try {
             const res = await fetch(`${CONFIG.BASE}/${type}/${id}?api_key=${CONFIG.KEY}`);
-            const data = await res.json();
+            seriesData = await res.json();
 
-            document.getElementById('bg-image').src = CONFIG.HD + data.backdrop_path;
-            document.getElementById('main-title').innerText = data.title || data.name;
-            document.getElementById('v-rating').innerText = data.vote_average.toFixed(1);
-            document.getElementById('v-year').innerText = (data.release_date || data.first_air_date || '').split('-')[0];
-            document.getElementById('v-overview').innerText = data.overview;
-            
-            const time = data.runtime || (data.episode_run_time ? data.episode_run_time[0] : 0);
-            document.getElementById('v-runtime').innerText = `${time} min`;
-
+            // Handle metadata synchronization
             if (type === 'tv') {
                 document.getElementById('tv-section').style.display = 'block';
-                setupSeasons(data.seasons, id, s, e);
+                const currentS = s ? parseInt(s) : (seriesData.seasons.filter(sx => sx.season_number > 0)[0]?.season_number || 1);
+                const currentE = e ? parseInt(e) : 1;
+                
+                renderSeasons(seriesData.seasons, id, currentS, currentE);
+                
+                // If specific episode requested, fetch episode details for custom backdrop/title
                 if (s && e) {
-                    document.getElementById('selection-box').style.display = 'flex';
-                    document.getElementById('selected-info').innerText = `S${s} • EPISODE ${e}`;
+                    await loadEpisodeBackdrop(id, s, e);
+                } else {
+                    updateUI(seriesData);
                 }
+            } else {
+                updateUI(seriesData);
             }
         } catch (err) { console.error(err); }
     }
 
-    function setupSeasons(seasons, tvId, activeS, activeE) {
-        const container = document.getElementById('season-tabs');
-        const validSeasons = seasons.filter(s => s.season_number > 0);
-        const startSeason = activeS ? parseInt(activeS) : validSeasons[0]?.season_number;
-
-        validSeasons.forEach((s) => {
-            const btn = document.createElement('button');
-            btn.className = `season-btn ${s.season_number === startSeason ? 'active' : ''}`;
-            btn.innerText = `Season ${s.season_number}`;
-            btn.onclick = () => fetchEpisodes(tvId, s.season_number, btn);
-            container.appendChild(btn);
-        });
-
-        if (validSeasons.length > 0) fetchEpisodes(tvId, startSeason, null, activeE);
+    async function loadEpisodeBackdrop(tvId, s, e) {
+        try {
+            const res = await fetch(`${CONFIG.BASE}/tv/${tvId}/season/${s}/episode/${e}?api_key=${CONFIG.KEY}`);
+            const epData = await res.json();
+            
+            updateUI(seriesData, epData);
+        } catch (err) {
+            updateUI(seriesData);
+        }
     }
 
-    async function fetchEpisodes(tvId, sNum, btn, activeE) {
-        if (btn) {
-            document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+    function updateUI(main, ep = null) {
+        const titleEl = document.getElementById('main-title');
+        const backdropEl = document.getElementById('bg-image');
+        const overviewEl = document.getElementById('v-overview');
+        const statusEl = document.getElementById('v-status');
+
+        if (ep) {
+            titleEl.innerText = `${main.name}: ${ep.name}`;
+            backdropEl.src = ep.still_path ? CONFIG.IMG_ORIG + ep.still_path : CONFIG.IMG_ORIG + (main.backdrop_path || main.poster_path);
+            overviewEl.innerText = ep.overview || main.overview;
+            statusEl.innerText = `Season ${ep.season_number} • Episode ${ep.episode_number}`;
+        } else {
+            titleEl.innerText = main.title || main.name;
+            backdropEl.src = CONFIG.IMG_ORIG + (main.backdrop_path || main.poster_path);
+            overviewEl.innerText = main.overview;
+            statusEl.innerText = "Now Trending";
         }
+
+        document.getElementById('v-rating').innerText = main.vote_average.toFixed(1);
+        document.getElementById('v-year').innerText = (main.release_date || main.first_air_date || '').split('-')[0];
+        document.getElementById('v-runtime').innerText = `${ep ? ep.runtime || 45 : main.runtime || 45} min`;
+        document.title = `${titleEl.innerText} - JustWatch`;
+    }
+
+    function renderSeasons(seasons, tvId, activeS, activeE) {
+        const container = document.getElementById('season-tabs');
+        container.innerHTML = '';
+        const list = seasons.filter(s => s.season_number > 0);
+
+        list.forEach(s => {
+            const btn = document.createElement('button');
+            btn.className = `season-btn ${s.season_number === activeS ? 'active' : ''}`;
+            btn.innerText = `Season ${s.season_number}`;
+            btn.onclick = () => {
+                // Update URL and reload to keep state sync
+                const url = new URL(window.location);
+                url.searchParams.set('s', s.season_number);
+                url.searchParams.set('e', 1); // Reset to ep 1 on season change
+                window.history.pushState({}, '', url);
+                
+                document.querySelectorAll('.season-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                loadEpisodes(tvId, s.season_number, activeE);
+            };
+            container.appendChild(btn);
+        });
+        
+        loadEpisodes(tvId, activeS, activeE);
+    }
+
+    async function loadEpisodes(tvId, sNum, activeE) {
         const list = document.getElementById('episode-list');
-        list.innerHTML = '<div style="padding:30px; text-align:center; opacity:0.5;">Memuat...</div>';
+        list.innerHTML = '<div style="padding:40px; text-align:center; opacity:0.5;"><i class="fas fa-spinner fa-spin"></i> Loading episodes...</div>';
         
         try {
             const res = await fetch(`${CONFIG.BASE}/tv/${tvId}/season/${sNum}?api_key=${CONFIG.KEY}`);
             const data = await res.json();
-            list.innerHTML = data.episodes.map(ep => {
-                const isActive = activeE && parseInt(activeE) === ep.episode_number;
-                return `
-                    <div class="ep-item" onclick="selectEpisode(${tvId}, ${sNum}, ${ep.episode_number})" style="${isActive ? 'background:rgba(251,192,45,0.1)' : ''}">
-                        <span class="ep-num">${ep.episode_number}</span>
-                        <div class="ep-name">${ep.name}</div>
-                        <i class="fas ${isActive ? 'fa-play-circle' : 'fa-play'}" style="font-size:0.7rem; opacity:0.4;"></i>
+            
+            list.innerHTML = data.episodes.map(ep => `
+                <div class="ep-item ${ep.episode_number == activeE ? 'active' : ''}" onclick="selectEpisode(${tvId}, ${sNum}, ${ep.episode_number})">
+                    <div class="ep-thumb">
+                        <img src="${ep.still_path ? CONFIG.IMG + ep.still_path : CONFIG.IMG + (seriesData.backdrop_path || '')}">
+                        <div class="play-overlay"><i class="fas fa-play"></i></div>
                     </div>
-                `;
-            }).join('');
-        } catch (err) { list.innerHTML = 'Gagal memuat.'; }
+                    <div style="flex:1;">
+                        <div style="font-size:0.7rem; color:var(--accent-color); font-weight:800;">EPISODE ${ep.episode_number}</div>
+                        <div style="font-weight:700; margin:3px 0; color:#fff;">${ep.name}</div>
+                        <div style="font-size:0.8rem; color:var(--text-secondary); display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${ep.overview || 'No description available.'}</div>
+                    </div>
+                </div>
+            `).join('');
+        } catch (err) {
+            list.innerHTML = '<p style="text-align:center; padding:20px;">Failed to load episodes.</p>';
+        }
     }
 
     function selectEpisode(id, s, e) {
-        window.location.href = `detail.html?id=${id}&type=tv&s=${s}&e=${e}`;
-    }
-
-    function startPlayer() {
-        document.getElementById('player-modal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-        timer = setTimeout(() => {
-            stopPlayer();
-            toggleAuth();
-        }, 3500);
-    }
-
-    function stopPlayer() {
-        document.getElementById('player-modal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        clearTimeout(timer);
+        // Update URL and reload for clean state management
+        const url = new URL(window.location);
+        url.searchParams.set('s', s);
+        url.searchParams.set('e', e);
+        window.location.href = url.href; 
     }
 
     function toggleAuth() {
         const el = document.getElementById('auth-overlay');
-        el.style.display = (el.style.display === 'flex') ? 'none' : 'flex';
+        const isOpen = el.style.display === 'flex';
+        el.style.display = isOpen ? 'none' : 'flex';
+        document.body.style.overflow = isOpen ? 'auto' : 'hidden';
     }
 
-    function doSearch() {
-        const q = document.getElementById('searchInput').value;
-        if(q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
-    }
-
-    initialize();
+    init();
 </script>
-
 </body>
 </html>
