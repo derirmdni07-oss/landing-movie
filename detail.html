@@ -381,11 +381,15 @@
     }
 
     function selectEpisode(id, s, e) {
-        const url = new URL(window.location);
-        url.searchParams.set('s', s);
-        url.searchParams.set('e', e);
-        window.location.href = url.href; 
-    }
+    // Mengambil judul film untuk dijadikan bagian dari link (slug)
+    const title = document.getElementById('main-title').innerText
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-') // Mengubah spasi/simbol jadi tanda minus
+        .replace(/(^-|-$)/g, '');    // Menghapus tanda minus di awal/akhir
+
+    // Mengarahkan ke format: /tv/79744/8/2/nama-judul
+    window.location.href = `/tv/${id}/${s}/${e}/${title}`;
+}
 
     function toggleAuth() {
         const overlay = document.getElementById('auth-overlay');
