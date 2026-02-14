@@ -332,7 +332,6 @@
             opacity: 0.4;
         }
 
-        /* --- PAGE TRANSITION --- */
         .page-fade {
             animation: fadeIn 0.8s ease forwards;
         }
@@ -380,9 +379,7 @@
     <div id="backdrop" class="hero-backdrop"></div>
 
     <main class="content-main">
-        <div id="studio-brand" class="studio-brand">
-            <!-- Populated by JS -->
-        </div>
+        <div id="studio-brand" class="studio-brand"></div>
 
         <h1 id="v-title">Loading...</h1>
         
@@ -430,10 +427,6 @@
         <div class="copyright-text">
             &copy; 2026 Series Watch - Entertainment
         </div>
-         <div class="">
-        <script async="async" data-cfasync="false" src="https://pl28297879.effectivegatecpm.com/dd80a6e8d135ab4228dd8780724379ef/invoke.js"></script>
-<div id="container-dd80a6e8d135ab4228dd8780724379ef"></div>
-        </div>      
     </footer>
 
     <script>
@@ -454,6 +447,10 @@
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
             const type = params.get('type') || 'movie';
+            
+            // Tangkap parameter season dan episode dari URL Vercel Rewrite
+            const urlSeason = params.get('s'); 
+            const urlEpisode = params.get('e');
 
             if(!id) return;
 
@@ -476,11 +473,9 @@
                 const brandContainer = document.getElementById('studio-brand');
                 if(data.production_companies && data.production_companies.length > 0) {
                     const mainStudio = data.production_companies[0];
-                    if(mainStudio.logo_path) {
-                        brandContainer.innerHTML = `<img src="${API.IMG}${mainStudio.logo_path}" class="studio-logo-img" alt="${mainStudio.name}">`;
-                    } else {
-                        brandContainer.innerHTML = `<span class="studio-name">${mainStudio.name}</span>`;
-                    }
+                    brandContainer.innerHTML = mainStudio.logo_path 
+                        ? `<img src="${API.IMG}${mainStudio.logo_path}" class="studio-logo-img" alt="${mainStudio.name}">`
+                        : `<span class="studio-name">${mainStudio.name}</span>`;
                     setTimeout(() => brandContainer.classList.add('show'), 300);
                 }
 
@@ -489,7 +484,7 @@
                 if(type === 'tv') {
                     document.getElementById('tv-layout').style.display = 'block';
                     document.getElementById('status-viewer').style.display = 'flex';
-                    renderSeasons(data.seasons, id);
+                    renderSeasons(data.seasons, id, urlSeason, urlEpisode);
                 }
             } catch(e) { console.error(e); }
         }
@@ -500,69 +495,51 @@
                 container.innerHTML = '<div class="studio-text" style="color:var(--text-dim); opacity:0.5; font-weight:700;">Global Studios</div>';
                 return;
             }
-
-            container.innerHTML = companies.map(c => {
-                if(c.logo_path) {
-                    return `<div class="studio-item"><img src="${API.IMG}${c.logo_path}" alt="${c.name}"></div>`;
-                } else {
-                    return `<div class="studio-item"><span style="color:var(--text-dim); font-weight:700; opacity:0.5; font-size:0.9rem;">${c.name}</span></div>`;
-                }
-            }).join('');
+            container.innerHTML = companies.map(c => c.logo_path 
+                ? `<div class="studio-item"><img src="${API.IMG}${c.logo_path}" alt="${c.name}"></div>`
+                : `<div class="studio-item"><span style="color:var(--text-dim); font-weight:700; opacity:0.5; font-size:0.9rem;">${c.name}</span></div>`
+            ).join('');
         }
 
-        function renderSeasons(seasons, tvId) {
+        function renderSeasons(seasons, tvId, urlSeason, urlEpisode) {
             const container = document.getElementById('season-scroll');
             const valid = seasons
                 .filter(s => s.season_number > 0)
-                .sort((a, b) => b.season_number - a.season_number);
+                .sort((a, b) => a.season_number - b.season_number);
             
-            container.innerHTML = valid.map((s, i) => `
-                <div class="s-card ${i === 0 ? 'active' : ''}" onclick="selectSeason(this, ${tvId}, ${s.season_number}, '${s.name}')">
-                    <img src="${s.poster_path ? API.IMG + s.poster_path : 'https://via.placeholder.com/200x300/0f172a/334155?text=No+Poster'}" alt="${s.name}" draggable="false">
+            // Logic: Ambil dari URL jika ada, jika tidak default ke season pertama
+            const activeSNum = urlSeason ? parseInt(urlSeason) : (valid[0] ? valid[0].season_number : 1);
+
+            container.innerHTML = valid.map((s) => `
+                <div class="s-card ${s.season_number === activeSNum ? 'active' : ''}" 
+                     onclick="selectSeason(this, ${tvId}, ${s.season_number}, '${s.name}')">
+                    <img src="${s.poster_path ? API.IMG + s.poster_path : 'https://via.placeholder.com/200x300'}" alt="${s.name}" draggable="false">
                     <div class="s-title">Season ${s.season_number}</div>
                 </div>
             `).join('');
 
-            if(valid.length > 0) {
-                currentSeasonName = valid[0].name;
-                loadEpisodes(tvId, valid[0].season_number);
+            const activeSeasonObj = valid.find(s => s.season_number === activeSNum) || valid[0];
+            if(activeSeasonObj) {
+                currentSeasonName = activeSeasonObj.name;
+                loadEpisodes(tvId, activeSNum, urlEpisode);
             }
         }
 
-        /**
-         * Realod Logic for Season Selection
-         */
-        function selectSeason(el, tvId, sNum, sName) {
-            // Visual feedback
-            document.querySelectorAll('.s-card').forEach(p => p.classList.remove('active'));
-            el.classList.add('active');
-            
-            // Reload simulation (Fade Out/In)
-            const main = document.querySelector('main');
-            main.style.opacity = '0';
-            main.style.transform = 'translateY(10px)';
-            
-            setTimeout(() => {
-                currentSeasonName = sName;
-                loadEpisodes(tvId, sNum);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                main.style.opacity = '1';
-                main.style.transform = 'translateY(0)';
-            }, 300);
-        }
-
-        async function loadEpisodes(tvId, sNum) {
+        async function loadEpisodes(tvId, sNum, urlEpisode) {
             const scroll = document.getElementById('episode-scroll');
-            scroll.innerHTML = '<div style="padding:20px; color:var(--text-dim);"><i class="fas fa-circle-notch fa-spin"></i> Loading Episodes...</div>';
+            scroll.innerHTML = '<div style="padding:20px; color:var(--text-dim);"><i class="fas fa-circle-notch fa-spin"></i> Loading...</div>';
             
             try {
                 const res = await fetch(`${API.BASE}/tv/${tvId}/season/${sNum}?api_key=${API.KEY}`);
                 const data = await res.json();
                 
-                scroll.innerHTML = data.episodes.map((ep, idx) => `
-                    <div class="ep-card ${idx === 0 ? 'active' : ''}" onclick="selectEpisode(this, '${ep.still_path}', '${ep.overview ? ep.overview.replace(/'/g, "\\'") : ""}', ${ep.episode_number})">
+                const activeENum = urlEpisode ? parseInt(urlEpisode) : data.episodes[0].episode_number;
+
+                scroll.innerHTML = data.episodes.map((ep) => `
+                    <div class="ep-card ${ep.episode_number === activeENum ? 'active' : ''}" 
+                         onclick="selectEpisode(this, '${ep.still_path}', '${ep.overview ? ep.overview.replace(/'/g, "\\'") : ""}', ${ep.episode_number})">
                         <div class="ep-thumb">
-                            <img src="${ep.still_path ? API.IMG + ep.still_path : 'https://via.placeholder.com/320x180/0f172a/334155?text=No+Preview'}" alt="ep" draggable="false">
+                            <img src="${ep.still_path ? API.IMG + ep.still_path : 'https://via.placeholder.com/320x180'}" alt="ep" draggable="false">
                             <div class="ep-play-overlay"><i class="fas fa-play"></i></div>
                         </div>
                         <div class="ep-info">
@@ -572,28 +549,24 @@
                     </div>
                 `).join('');
 
-                if(data.episodes.length > 0) {
-                    updateEpisodeDetail(data.episodes[0].still_path, data.episodes[0].overview, data.episodes[0].episode_number);
-                }
+                const activeEp = data.episodes.find(e => e.episode_number === activeENum) || data.episodes[0];
+                updateEpisodeDetail(activeEp.still_path, activeEp.overview, activeEp.episode_number);
+                
             } catch(e) { scroll.innerHTML = 'Failed to load episodes.'; }
         }
 
-        /**
-         * Realod Logic for Episode Selection
-         */
+        function selectSeason(el, tvId, sNum, sName) {
+            document.querySelectorAll('.s-card').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
+            currentSeasonName = sName;
+            loadEpisodes(tvId, sNum);
+        }
+
         function selectEpisode(el, stillPath, overview, epNum) {
             document.querySelectorAll('.ep-card').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
-            
-            // Visual reload effect for the backdrop and info
-            const backdrop = document.getElementById('backdrop');
-            backdrop.style.opacity = '0.5';
-            
-            setTimeout(() => {
-                updateEpisodeDetail(stillPath, overview, epNum);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                backdrop.style.opacity = '1';
-            }, 200);
+            updateEpisodeDetail(stillPath, overview, epNum);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function updateEpisodeDetail(stillPath, overview, epNum) {
@@ -611,18 +584,7 @@
 
         init();
     </script>
-    <!-- Histats.com  START  (aync)-->
-<script type="text/javascript">var _Hasync= _Hasync|| [];
-_Hasync.push(['Histats.start', '1,4826485,4,0,0,0,00010000']);
-_Hasync.push(['Histats.fasi', '1']);
-_Hasync.push(['Histats.track_hits', '']);
-(function() {
-var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-hs.src = ('//s10.histats.com/js15_as.js');
-(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-})();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4826485&101" alt="" border="0"></a></noscript>
-<!-- Histats.com  END  -->
-</script>
+
+    <script type="text/javascript">var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,4826485,4,0,0,0,00010000']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();</script>
 </body>
 </html>
