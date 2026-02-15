@@ -243,6 +243,10 @@
             display: flex; gap: 16px; overflow-x: auto; padding: 10px 0;
             scrollbar-width: none;
             cursor: grab;
+            user-select: none;
+        }
+        .season-scroll:active, .episode-scroll:active {
+            cursor: grabbing;
         }
         .season-scroll::-webkit-scrollbar, .episode-scroll::-webkit-scrollbar { display: none; }
 
@@ -250,12 +254,14 @@
             flex: 0 0 110px;
             cursor: pointer;
             transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: auto;
         }
         .s-card img {
             width: 100%; aspect-ratio: 2/3; border-radius: 14px;
             border: 2.5px solid transparent; object-fit: cover;
             box-shadow: 0 8px 20px rgba(0,0,0,0.5);
             transition: 0.3s;
+            pointer-events: none;
         }
         .s-card:hover img { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.7); }
         .s-card.active img { border-color: var(--accent); transform: scale(1.08); box-shadow: 0 12px 25px rgba(59, 130, 246, 0.3); }
@@ -269,11 +275,12 @@
             overflow: hidden;
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            pointer-events: auto;
         }
         .ep-card:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-5px); }
         .ep-card.active { border-color: var(--accent); background: rgba(59, 130, 246, 0.1); transform: translateY(-4px); }
 
-        .ep-thumb { width: 100%; aspect-ratio: 16/9; position: relative; background: #0f172a; }
+        .ep-thumb { width: 100%; aspect-ratio: 16/9; position: relative; background: #0f172a; pointer-events: none; }
         .ep-thumb img { width: 100%; height: 100%; object-fit: cover; }
         .ep-play-overlay {
             position: absolute; inset: 0; background: rgba(0,0,0,0.3);
@@ -283,7 +290,7 @@
         .ep-card:hover .ep-play-overlay { opacity: 1; }
         .ep-card.active .ep-play-overlay { opacity: 1; background: rgba(59, 130, 246, 0.25); }
 
-        .ep-info { padding: 14px; }
+        .ep-info { padding: 14px; pointer-events: none; }
         .ep-label { font-size: 0.65rem; font-weight: 800; color: var(--accent); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
         .ep-name { font-size: 0.9rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
@@ -354,8 +361,8 @@
 </head>
 <body class="page-fade">
 
-     <header id="main-nav" class="top-nav">
-        <a href="index.html" class="logo-wrapper">
+    <header id="main-nav" class="top-nav">
+        <a href="/" class="logo-wrapper">
             <div class="clapper-icon">
                 <svg class="clapper-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15 35L85 15L90 30L20 50L15 35Z" fill="white" />
@@ -370,7 +377,7 @@
         </a>
 
         <div class="nav-actions">
-            <a href="index.html" class="close-btn">
+            <a href="/" class="close-btn">
                 <i class="fas fa-times"></i>
             </a>
         </div>
@@ -411,10 +418,10 @@
 
         <div id="tv-layout" class="section-container" style="display:none;">
             <div class="section-header">Select Season</div>
-            <div id="season-scroll" class="season-scroll"></div>
+            <div id="season-scroll" class="season-scroll draggable"></div>
 
             <div class="section-header" style="margin-top:30px;">Episodes</div>
-            <div id="episode-scroll" class="episode-scroll"></div>
+            <div id="episode-scroll" class="episode-scroll draggable"></div>
         </div>
     </main>
 
@@ -441,16 +448,75 @@
         let mainOverview = "";
         let currentSeasonName = "Season 1";
 
+        // --- HELPER: CREATE SLUG ---
+        function createSlug(text) {
+            if (!text) return 'watch';
+            return text.toString().toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
         function redirectToOffer() { window.location.href = OFFER_LINK; }
+
+        // --- MOUSE DRAG SCROLL LOGIC ---
+        function enableDragScroll(selector) {
+            const slider = document.querySelector(selector);
+            if (!slider) return;
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            let isDragging = false;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                isDragging = false;
+                slider.classList.add('active');
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+                slider.classList.remove('active');
+            });
+
+            slider.addEventListener('mouseup', (e) => {
+                isDown = false;
+                slider.classList.remove('active');
+            });
+
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                isDragging = true;
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2;
+                slider.scrollLeft = scrollLeft - walk;
+            });
+
+            slider.addEventListener('click', (e) => {
+                if (isDragging) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
+        }
 
         async function init() {
             const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            const type = params.get('type') || 'movie';
+            const pathParts = window.location.pathname.split('/'); 
+
+            // Deteksi parameter dari Pretty URL (Vercel) atau Query String (Legacy)
+            // Path: /tv/:id/:season/:episode/:slug
+            const typeFromPath = pathParts[1]; // 'tv' atau 'movie'
+            const isTv = typeFromPath === 'tv';
             
-            // Tangkap parameter season dan episode dari URL Vercel Rewrite
-            const urlSeason = params.get('s'); 
-            const urlEpisode = params.get('e');
+            const type = (isTv || typeFromPath === 'movie') ? typeFromPath : (params.get('type') || 'movie');
+            const id = isTv ? pathParts[2] : (typeFromPath === 'movie' ? pathParts[2] : params.get('id'));
+            
+            // Season dan Episode khusus TV
+            const urlSeason = isTv ? pathParts[3] : params.get('s');
+            const urlEpisode = isTv ? pathParts[4] : params.get('e');
 
             if(!id) return;
 
@@ -460,6 +526,9 @@
             try {
                 const res = await fetch(`${API.BASE}/${type}/${id}?api_key=${API.KEY}&append_to_response=images`);
                 const data = await res.json();
+
+                // Update Title Meta
+                document.title = `${data.title || data.name} — Series Watch`;
 
                 document.getElementById('backdrop').style.backgroundImage = `url(${API.FULL}${data.backdrop_path})`;
                 document.getElementById('v-title').innerText = data.title || data.name;
@@ -484,7 +553,10 @@
                 if(type === 'tv') {
                     document.getElementById('tv-layout').style.display = 'block';
                     document.getElementById('status-viewer').style.display = 'flex';
-                    renderSeasons(data.seasons, id, urlSeason, urlEpisode);
+                    renderSeasons(data.seasons, id, urlSeason, urlEpisode, data.name);
+                    
+                    enableDragScroll('#season-scroll');
+                    enableDragScroll('#episode-scroll');
                 }
             } catch(e) { console.error(e); }
         }
@@ -501,18 +573,17 @@
             ).join('');
         }
 
-        function renderSeasons(seasons, tvId, urlSeason, urlEpisode) {
+        function renderSeasons(seasons, tvId, urlSeason, urlEpisode, tvShowName) {
             const container = document.getElementById('season-scroll');
             const valid = seasons
                 .filter(s => s.season_number > 0)
-                .sort((a, b) => a.season_number - b.season_number);
+                .sort((a, b) => b.season_number - a.season_number);
             
-            // Logic: Ambil dari URL jika ada, jika tidak default ke season pertama
             const activeSNum = urlSeason ? parseInt(urlSeason) : (valid[0] ? valid[0].season_number : 1);
 
             container.innerHTML = valid.map((s) => `
                 <div class="s-card ${s.season_number === activeSNum ? 'active' : ''}" 
-                     onclick="selectSeason(this, ${tvId}, ${s.season_number}, '${s.name}')">
+                     onclick="selectSeason(this, ${tvId}, ${s.season_number}, '${s.name}', '${createSlug(tvShowName)}')">
                     <img src="${s.poster_path ? API.IMG + s.poster_path : 'https://via.placeholder.com/200x300'}" alt="${s.name}" draggable="false">
                     <div class="s-title">Season ${s.season_number}</div>
                 </div>
@@ -555,10 +626,15 @@
             } catch(e) { scroll.innerHTML = 'Failed to load episodes.'; }
         }
 
-        function selectSeason(el, tvId, sNum, sName) {
+        function selectSeason(el, tvId, sNum, sName, slug) {
             document.querySelectorAll('.s-card').forEach(p => p.classList.remove('active'));
             el.classList.add('active');
             currentSeasonName = sName;
+            
+            // PushState untuk mengubah URL di browser tanpa reload
+            const newPath = `/tv/${tvId}/${sNum}/1/${slug}`;
+            window.history.pushState({}, '', newPath);
+            
             loadEpisodes(tvId, sNum);
         }
 
@@ -566,6 +642,14 @@
             document.querySelectorAll('.ep-card').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
             updateEpisodeDetail(stillPath, overview, epNum);
+            
+            // Update URL Episode di browser
+            const pathParts = window.location.pathname.split('/');
+            if(pathParts[1] === 'tv') {
+                pathParts[4] = epNum;
+                window.history.pushState({}, '', pathParts.join('/'));
+            }
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -584,7 +668,5 @@
 
         init();
     </script>
-
-    <script type="text/javascript">var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,4826485,4,0,0,0,00010000']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();</script>
 </body>
 </html>
